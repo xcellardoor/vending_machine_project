@@ -92,8 +92,6 @@ while($db_field = mysql_fetch_assoc($result)) {
 	array_push($product_array_values, $db_field['product_id']);
 }
 
-
-
 $SQL = "SELECT machine_id FROM machine_table";
 $result = mysql_query($SQL);
 while($db_field = mysql_fetch_assoc($result)){

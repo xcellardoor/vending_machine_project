@@ -1,6 +1,12 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css"
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>
+    function display_top_rated() {
+            $("#report_section").load("financial_top_rated.php");
+    }
+    </script>
 </head>
 
 <body id="main-body">
@@ -14,14 +20,18 @@
  */
 
 include("menu.php");
-
+include('credentials.php');
+$db_handle = mysql_connect($server, $user_name, $password);
+$db_found = mysql_select_db($database,$db_handle);
 ?>
 
 <div style="float: left; width: 50%">
 
-<p>Show Best Selling Products<br>
-Show Best Product This Month<br>
-</p>
+    <button type="button" onclick="display_top_rated()">Top Rated</button>
+
+    <p>Show Best Selling Products<br>
+    Show Best Product This Month<br>
+    </p>
 </div>
 
 <div style="float: left; width: 50%">
@@ -31,9 +41,6 @@ Show Best Product This Month<br>
 
 </div>
 
-<button type="button"
-        onclick="document.getElementById('report_section').innerHTML = 'Hello JavaScript!'">
-    Click Me!</button>
 
 </body>
 </html>
