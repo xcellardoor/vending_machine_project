@@ -1,0 +1,47 @@
+table.center {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+table, th, td {
+	border: 1px solid black;
+		text-align:center;
+
+}
+
+#header {
+	position: static;
+	top: 0;
+	width: 100%;
+	background-color: #BCB7DA;
+}
+
+#footer {
+	text-align: center;
+	clear:both;
+
+}
+
+#main-body {
+	background-color: #E3E1F1;
+}
+
+
+
+ul li { list-style: none; display: inline; }
+ul li { font-size: 24px; }
+ul li:after { content: " \00b7"; }
+ul li:last-child:after { content: none; }
+
+.invisible_link {
+        color: #000; text-decoration: none;
+}
+
+a:active {
+    background-color: yellow;
+}
+
+.boxed {
+  border: 1px solid green ;
+}
