@@ -20,7 +20,7 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['add_product_submit'])){
-	#vars
+	#varss
 	$new_product_id=$_POST['add_product_name'];
 	$new_machine_id=$_POST['add_vending_machine'];
 	$new_quantity_in_machine=$_POST['new_quantity'];
