@@ -46,8 +46,8 @@ $db_found = mysql_select_db($database,$db_handle);
 
 <div style="float: left; width: 50%">
 <div align="center">
-    <button type="button" onclick="display_top_rated()">Top Rated</button><br>
-    <button type="button" onclick="display_all_sales_total()">Total of All Time Sales</button><br>
+    <button type="button" onclick="display_top_rated()">Show Best Sellers</button><br><br>
+    <button type="button" onclick="display_all_sales_total()">Total of All Time Sales</button><br><br>
     <input id="older_date" name="older_date" style="width:auto" placeholder="Older Boundary"/>
     <input id="newer_date" name="newer_date" style="width:auto" placeholder="Recent Boundary"/>
     <button type="button" onclick="display_sales_between_dates()">Show Sales Between Dates</button>
@@ -60,7 +60,7 @@ $db_found = mysql_select_db($database,$db_handle);
 </div>
 
 <div style="float: left; width: 50%">
-<div id="report_section">
+<div align="center" id="report_section">
 <p>test</p>
 </div>
 
