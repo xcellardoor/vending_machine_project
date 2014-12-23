@@ -1,6 +1,6 @@
 
 <div id="footer">
 
-<br><p>This is a temporary holding footer which shall be used to hold various details of the website... Maker, company using it under license etc.</p>
+<br><p>&copy; S162320 Management Systems Ltd. 'Vending Machine Management System' and 'VMMS' are trademarks of S162320 Management Systems Ltd. All Rights Reserved</p>
 
 </div>

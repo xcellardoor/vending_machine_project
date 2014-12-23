@@ -48,14 +48,10 @@ $db_found = mysql_select_db($database,$db_handle);
 <div align="center">
     <button type="button" onclick="display_top_rated()">Show Best Sellers</button><br><br>
     <button type="button" onclick="display_all_sales_total()">Total of All Time Sales</button><br><br>
-    <input id="older_date" name="older_date" style="width:auto" placeholder="Older Boundary"/>
-    <input id="newer_date" name="newer_date" style="width:auto" placeholder="Recent Boundary"/>
+    <input id="older_date" name="older_date" style="width:auto" placeholder="Older Boundary" type="date" value="2015-01-01"/>
+    <input id="newer_date" name="newer_date" style="width:auto" placeholder="Recent Boundary" type="date" value="2015-01-01"/>
     <button type="button" onclick="display_sales_between_dates()">Show Sales Between Dates</button>
 
-
-    <p>Show Best Selling Products<br>
-    Show Best Product This Month<br>
-    </p>
 </div>
 </div>
 

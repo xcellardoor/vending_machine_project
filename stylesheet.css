@@ -10,11 +10,16 @@ table, th, td {
 
 }
 
+h1, p, h2, h3, body{
+	/*font-family:Century Gothic, sans-serif;*/
+	font-family: Trebuchet MS;
+}
+
 #header {
 	position: static;
 	top: 0;
 	width: 100%;
-	background-color: #BCB7DA;
+	background-color: #B9CCFA;
 }
 
 #footer {
