@@ -6,7 +6,7 @@ table.center {
 
 table, th, td {
 	border: 1px solid black;
-		text-align:center;
+	text-align:center;
 
 }
 
@@ -19,7 +19,9 @@ h1, p, h2, h3, body{
 	position: static;
 	top: 0;
 	width: 100%;
-	background-color: #B9CCFA;
+	/*background-color: #B9CCFA;*/
+	background-color: #d3d3d3;
+	font-size: 50%;
 }
 
 #footer {
@@ -32,15 +34,13 @@ h1, p, h2, h3, body{
 	background-color: #E3E1F1;
 }
 
-
-
 ul li { list-style: none; display: inline; }
 ul li { font-size: 24px; }
 ul li:after { content: " \00b7"; }
 ul li:last-child:after { content: none; }
 
 .invisible_link {
-        color: #000; text-decoration: none;
+	color: #000; text-decoration: none;
 }
 
 a:active {

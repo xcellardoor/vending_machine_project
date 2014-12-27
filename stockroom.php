@@ -28,7 +28,7 @@ function dropdown_menu($name, array $values, array $options, $selected=null){
 
 include "menu.php";
 
-print '<br>';
+print '<div align="center"><h1>Stockroom Management</h1></div>';
 print '<div style="float: left; width: 50%">';
 
 
@@ -96,7 +96,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 
 }
 
-print "<h2>Alter Existing</h2>";
+print "<h3>Alter Existing</h3>";
 
 echo dropdown_menu('product_list', $product_array, $product_array, $selected);
 
@@ -106,7 +106,7 @@ print "New Value: <input name=\"new_product_value\" size=\"15\"/> 	";
 print "<input name=\"stockroom_alter_product_submit\" type=\"submit\" value=\"Update Database\" />";
 
 //ADDITION
-print "<h2>Addition</h2>";
+print "<h3>Addition</h3>";
 print "<table><tr><th>Product Name<th>Initial Stock<th>Low Stock Alert</th></tr>";
 print "<td><input name='stockroom_new_product_name' style=\'width:100%\' placeholder=\"New Product Name\" >";
 print "<td><input name='stockroom_new_stock_level' style=\'width:100%\' placeholder=\"Initial Stock Level\">";
@@ -129,14 +129,14 @@ while($db_field = mysql_fetch_assoc($result)) {
 }
 
 
-print "<h2>Removal</h2>";
+print "<h3>Removal</h3>";
 print "<table>";
 print "<tr><th>Product</th></tr>";
 print "<tr><td>"; echo dropdown_menu('remove_product_name', $product_names, $product_names, 0); print "</td>";
 print "<td><input name=\"remove_stockroom_product_submit\" type=\"submit\" value=\"Remove Product\" /></td></tr>";
 print "</table>";
 
-print "<h2>Quick Stock Amendment</h2>";
+print "<h3>Quick Stock Amendment</h3>";
 
 print "</form>";
 

@@ -4,7 +4,31 @@
 	<link rel="stylesheet" type="text/css" href="stylesheet.css">
 	<script src="jquery-1.7.2.min.js"></script>
 	<script>
+		function validateForm(array) {
+			for (var i in array) {
+				if (i == null || i == "") {
+					alert(i +" must be filled out");
+					return false;
+				}
+			}
 
+		}
+
+		function sort_table() {
+			var request = $.ajax({
+				url: "vending_table_content.php?vending_sort_by_dropdown="+$('#vending_sort_by_dropdown').val(),
+				type: "GET",
+				dataType: "html"
+			});
+
+			request.done(function(msg) {
+				$("#table_section").html(msg);
+			});
+
+			request.fail(function(jqXHR, textStatus) {
+				alert( "Request failed: " + textStatus );
+			});
+		}
 	</script>
 </head>
 <title>Vending Machines</title>
@@ -13,28 +37,20 @@
 
 <?php
 
-function dropdown_menu($name, array $values, array $options, $selected=null){
-	$dropdown = '<select name="'.$name.'" id="'.$name.'">'."\n";
-	$selected = $selected;
-
-	#foreach($options as $key=>$option){
-	foreach (array_combine($values, $options) as $id=>$value){
-
-		$select = $selected==$value ? ' selected' : null;
-
-		$dropdown .= '<option value="'.$id.'"'.$select.'>'.$value.'</option>'."\n";
-
-	}
-	$dropdown .= '</select>'."\n";
-
-	return $dropdown;
-}
-
+include('shared_php_functions.php'); //Import shared functions
 include('menu.php');
 
 print "<div align=center><h1>Vending Machine Management</h1></div>";
 
-print '<div id="demo" style="float: left; width: 50%">';
+
+print '<div align=center id="left_column" style="float: left; width: 50%">';
+print "<table cellspacing='0' cellpadding='0'>";
+echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'best_before', 'building'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1);
+print "<button type='button' onclick='sort_table()'>Sort!</button>";
+print "</tr></table>";
+
+print "<div align=center id='table_section'>";
+
 
 print "<table class='center'>";
 include('credentials.php');
@@ -43,6 +59,7 @@ $db_found = mysql_select_db($database,$db_handle);
 
 date_default_timezone_set('Europe/London');
 
+/**
 if($db_found){
 	$SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id order by machine_id;";
 	$result = mysql_query($SQL);
@@ -64,8 +81,12 @@ else {
 	mysql_close($db_handle);
 
 }
+ **/
+
+include('vending_table_content.php');
+
 print "</table>";
-print "</div>";
+print "</div></div>";
 print '<div style="float: left; width: 50%">';
 
 $active_machine_array=array();
@@ -76,11 +97,11 @@ $product_table_options=array();
 $product_table_values=array();
 $vending_table_columns=array();
 
-print "<form name='alter_vending_table' method='post' action='post.php'>";
+//print "<form class='form_alert' name='alter_vending_table' method='post' action='post.php' onsubmit='return validateForm($test_array)'>";
 
 
 #$SQL = "SELECT * FROM vending_table";
-$SQL = 'select * from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id;';
+$SQL = 'SELECT * FROM vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id;';
 $result = mysql_query($SQL);
 
 while($db_field = mysql_fetch_assoc($result)) {
@@ -124,7 +145,9 @@ $machines_in_use_array = array_unique($machines_in_use_array);
 sort($machines_in_use_array);
 #sort($product_array_items);
 
-print "<div align=center><h3>Alter Product</h3>";
+print "<div align=center>";
+
+print "<h3>Alter Product</h3>";
 print "<table cellspacing='0' cellpadding='0'><tr><th>Product Name<th>Vending Machine<th>Attribute to Alter<th>New Value</th></tr>";
 #Since the same list of 'existing products in machines' is needed, we can borrow the line used for deleting
 print "<tr><td>"; echo dropdown_menu('alter_product_id',$product_array_values, $product_array_items, 0); print "<td>"; echo dropdown_menu('alter_machine_id',$machines_in_use_array, $machines_in_use_array, 0); print "<td>"; echo dropdown_menu('alter_product_choice', $vending_table_columns, $vending_table_columns,0);
@@ -169,6 +192,18 @@ print "</table>";
 
 
 print "<h3>Remove Machine</h3>";
+print "<table cellpadding='0' cellspacing='0'>";
+print "<tr><th>Vending Machine</th></tr>";
+print "<tr><td>";
+echo dropdown_menu('vending_remove_machine',$machines_in_use_array, $machines_in_use_array, 0);
+print "<td><input name=\"vending_remove_machine_submit\" type=\"submit\" value=\"Remove Machine\" /></td></th>";
+
+
+
+print "</table>";
+
+
+
 print "</form>";
 
 print "</div>";
