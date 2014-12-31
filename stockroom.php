@@ -1,11 +1,15 @@
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="stylesheet.css"
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 </head>
-<title>Stockroom</title>
+<title>Stockroom | Vending Machine Management System</title>
 
-<body id="main-body">
+<body>
+
+
+
 <?php
 
 
@@ -28,7 +32,7 @@ function dropdown_menu($name, array $values, array $options, $selected=null){
 
 include "menu.php";
 
-print '<div align="center"><h1>Stockroom Management</h1></div>';
+print '<div id="main-body"><div align="center"><h1>Stockroom Management</h1></div>';
 print '<div style="float: left; width: 50%">';
 
 
@@ -53,7 +57,7 @@ if($db_found){
 			print "<td BGCOLOR=\"#EE0000\">LOW!</td></tr>";
 		}
 		else{
-			print "<td BGCOLOR=\"#00ff00\">OK</td></tr>";
+			print "<td BGCOLOR=\"#26D82F\">OK</td></tr>";
 		}
 	}
 	//MYSQL CLOSE could go here
@@ -145,11 +149,13 @@ print "</div>";
 mysql_close($db_handle);
 
 ?>
-
+<div class="clear"></div>
+</div>
 <?php
 include('footer.php');
 
 ?>
+
 </body>
 
 </html>

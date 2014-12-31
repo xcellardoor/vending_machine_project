@@ -1,12 +1,12 @@
-
-<div id='header' align=center>
-
-<h1><em>Vending Machine Management System</em></h1>
-<ul>
-	<li><a href="vending.php" class="invisible_link">Vending Machines</a></li>
-	<li><a href="stockroom.php" class="invisible_link">Stockroom</a></li>
-	<li><a href="financial.php" class="invisible_link">Financial</a></li>
-</ul>
+<header>
+<div class="lefthalf">
+<h1><a href="index.php">Vending Machine Management System</a></h1>
 
 </div>
-</body>
+<nav class="righthalf"><ul>
+	<li><a href="vending.php">Vending Machines</a></li>
+	<li><a href="stockroom.php">Stockroom</a></li>
+	<li><a href="financial.php">Financial</a></li>
+</ul>
+</nav>
+<div class="clear"></div></header>

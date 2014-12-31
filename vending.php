@@ -1,7 +1,8 @@
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 	<script src="jquery-1.7.2.min.js"></script>
 	<script>
 		function validateForm(array) {
@@ -33,19 +34,20 @@
 </head>
 <title>Vending Machines</title>
 
-<body id="main-body">
+<body>
 
 <?php
 
 include('shared_php_functions.php'); //Import shared functions
 include('menu.php');
+print '<div id="main-body">';
 
 print "<div align=center><h1>Vending Machine Management</h1></div>";
 
 
 print '<div align=center id="left_column" style="float: left; width: 50%">';
 print "<table cellspacing='0' cellpadding='0'>";
-echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'best_before', 'building'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1);
+echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'building', 'best_before'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1);
 print "<button type='button' onclick='sort_table()'>Sort!</button>";
 print "</tr></table>";
 
@@ -97,7 +99,9 @@ $product_table_options=array();
 $product_table_values=array();
 $vending_table_columns=array();
 
-//print "<form class='form_alert' name='alter_vending_table' method='post' action='post.php' onsubmit='return validateForm($test_array)'>";
+print "<form class='form_alert' name='alter_vending_table' method='post' action='post.php'>";
+
+//onsubmit='return validateForm($test_array)
 
 
 #$SQL = "SELECT * FROM vending_table";
@@ -161,7 +165,6 @@ print "<h3>Add Product</h3>";
 print "<table cellspacing='0' cellpadding='0'>"; 
 print "<tr><th>Product Name<th>Machine ID<th>Quantity<th>Best-Before</th></tr>";
 print "<tr><td>"; echo dropdown_menu('add_product_name', $product_table_values, $product_table_options, 0); print "</td> 	";
-#print "<td><input name=\"new_machine_id\" style=\"width:100%\" placeholder=\"Machine ID\"/></td> 	";
 print "<td>"; echo dropdown_menu('add_vending_machine', $active_machine_array, $active_machine_array, 0); print "</td>";
 print "<td><input name=\"new_quantity\" style=\"width:100%\" placeholder=\"Quantity\"/></td> 	";
 print "<td><input name=\"new_best_before\" style=\"width:100%\" placeholder='2015-01-01' type='date' value='2015-01-01'/></td> 	";
@@ -206,6 +209,7 @@ print "</table>";
 
 print "</form>";
 
+print "</div>";
 print "</div>";
 print "</div>";
 include('footer.php');
