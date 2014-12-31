@@ -29,7 +29,7 @@
                 break;
 
             default:
-                document.getElementById('test_area').innerHTML="blah";
+                document.getElementById('test_area').innerHTML="";
         }
     }
 
@@ -81,6 +81,7 @@ $db_found = mysql_select_db($database,$db_handle);
     $("#report_section").load("financial_table_content.php");
 </script>
 </div>
+    <br>
 </div>
 
 </body>
