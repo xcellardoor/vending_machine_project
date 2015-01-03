@@ -1,6 +1,6 @@
 <?php
 
-include('credentials.php');
+include('./includes/credentials.php');
 
 $db_handle = mysql_connect($server, $user_name, $password);
 $db_found = mysql_select_db($database,$db_handle);
@@ -85,8 +85,28 @@ if(isset($_POST['vending_new_machine_submit'])){
 	$floor=$_POST['vending_new_machine_floor'];
 
 	$query = "INSERT INTO machine_table (machine_id, building, floor) VALUES ('$machine_id', '$building', '$floor');";
-	#print $query; die("muhaha");
 	mysql_query($query) or die ("Unable to Add Machine to Machine Table");
+	header("location:vending.php");
+
+}
+
+if(isset($_POST['vending_remove_machine_submit'])){
+	//*echo '<script>if(window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?"));</script>';
+
+	$machine_to_delete=$_POST['vending_remove_machine_dropdown'];
+	//echo $machine_to_delete;
+	$query = "DELETE FROM machine_table WHERE machine_id='$machine_id';";
+	mysql_query($query) or die ("Unable to delete Vending Machine");
+	header("location:vending.php");
+}
+
+if(isset($_POST['vending_alter_machine_submit'])){
+	$machine_id=$_POST['vending_alter_machine_id'];
+	$attribute_to_alter=$_POST['vending_alter_machine_attribute'];
+	$new_value=$_POST['vending_alter_machine_value'];
+
+	$query = "UPDATE machine_table set $attribute_to_alter = '$new_value' where machine_id=$machine_id;";
+	mysql_query($query) or die ("Unable to Alter Machine");
 	header("location:vending.php");
 
 }
