@@ -10,11 +10,54 @@
 
     <script>
 
-        $(document).ready(function()
-            {
+        $(document).ready(function () {
                 $("table").tablesorter();
             }
         );
+
+        function filter_selections(argument) {
+
+            switch (argument) {
+                case "product_name":
+                    var result = "Type start of name and click Filter<br><input id='stockroom_filter_product_name' placeholder='Product Name?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
+                case "remaining_stock":
+                    var result = "<select id='stockroom_filter_stock_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='stockroom_filter_stock_value' placeholder='Amount of Stock?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
+                case "low_stock":
+                    var result = "Type stock amount and click Filter<br><input id='stockroom_filter_low_stock' placeholder='Low Stock?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
+                default:
+                    document.getElementById('filter_options').innerHTML = "";
+            }
+        }
+
+        function filter_table() {
+            var request = $.ajax({
+                url: "stockroom_table_content.php?stockroom_filter_dropdown=" + $('#stockroom_filter_dropdown').val() + "&stockroom_filter_stock_direction=" + $('#stockroom_filter_stock_direction').val() + "&stockroom_filter_stock_value=" + $('#stockroom_filter_stock_value').val() + "&stockroom_filter_product_name=" + $('#stockroom_filter_product_name').val() + "&stockroom_filter_low_stock=" + $('#stockroom_filter_low_stock').val(),
+                type: "GET",
+                dataType: "html"
+            });
+
+            request.done(function (msg) {
+                $("#table_section").html(msg);
+                $("table").tablesorter();
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        }
+
+        function open_order_window() {
+            newwindow = window.open('./orders.php', 'name', 'height=600,width=800');
+            if (window.focus) {
+                newwindow.focus()
+            }
+        }
     </script>
 
 </head>
@@ -49,40 +92,31 @@ include "./includes/shared_php_functions.php";
 
 <div id="main-body">
     <div align="center"><h1>Stockroom Management</h1></div>
-    <div style="float: left; width: 50%">
+    <div style="float: left; width: 50%" align="center">
 
-        <table class='tablesorter' id="stockroom_table">
+        <select id='stockroom_filter_dropdown' onchange="filter_selections(this.value)">
+            <option value="no_filter" selected>No Filter</option>
+            <option value="product_name">Product Name</option>
+            <option value="in_stock">In Stock</option>
+            <option value="out_of_stock">Out Of Stock</option>
+            <option value="remaining_stock">Remaining Stock</option>
+            <!--<option value="sale_price">Sale Price</option>
+            <option value="purchase_price">Purchase Price</option>
+            <option value="low_stock">Low Stock Alert</option>-->
+        </select>
+        <button type="button" onclick="filter_table()">Filter!</button>
+        <br>
+
+        <div id="filter_options">
+
+        </div>
+
+        <div id="table_section">
             <?php
-            include('./includes/credentials.php');
+            include('./stockroom_table_content.php');
 
-            $db_handle = mysql_connect($server, $user_name, $password);
-            $db_found = mysql_select_db($database, $db_handle);
-
-
-            #$conn = new mysqli($server, $user_name,)
-
-            if ($db_found) {
-                $SQL = "SELECT * FROM product_table";
-                $result = mysql_query($SQL);
-                print "<thead><tr><th>Product Name<th>Remaining Stock<th>Purchase Price<th>Sale price<th>Low Stock Alert<th>Stock State</th></tr></thead><tbody>";
-                while ($db_field = mysql_fetch_assoc($result)) {
-                    print "<tr><td>" . $db_field['product_name'] . "<td>" . $db_field['remaining_stock'] . "<td>" . $db_field['stock_purchase_price'] . "<td>" . $db_field['stock_sale_price'] . "<td>" . $db_field['low_stock_alert'];
-
-                    if ($db_field['low_stock_alert'] > $db_field['remaining_stock']) {
-                        print "<td BGCOLOR=\"#EE0000\">LOW!</td></tr>";
-                    } else {
-                        print "<td BGCOLOR=\"#26D82F\">OK</td></tr>";
-                    }
-                }
-                //MYSQL CLOSE could go here
-            } else {
-                print "Database Access Error!";
-                mysql_close($db_handle);
-
-            }
             ?>
-        </tbody>
-        </table>
+        </div>
         <br>
 
     </div>
@@ -115,14 +149,16 @@ include "./includes/shared_php_functions.php";
             <?php
             echo dropdown_menu('product_list', $product_array, $product_array, 1);
             //echo dropdown_menu('column_list', $column_array, $column_array, 1);
-            echo dropdown_menu('column_list', ['product_name','stock_purchase_price','stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
+            echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
             ?>
 
             <input name="new_product_value" size="15" placeholder="New Value"/>
             <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
 
             <!--ADDITION-->
-            <br><br><h3>Add Product</h3>
+            <br><br>
+
+            <h3>Add Product</h3>
             <table>
                 <tr>
                     <th>Product Name
@@ -130,9 +166,10 @@ include "./includes/shared_php_functions.php";
                     <th>Low Stock Alert</th>
                 </tr>
                 <tr>
-                <td><input name='stockroom_new_product_name' style='width:100%' placeholder="New Product Name"></td>
-                <td><input name='stockroom_new_stock_level' style='width:100%' placeholder="Initial Stock Level"></td>
-                <td><input name='stockroom_new_stock_alert' style='width:100%' placeholder="Low Stock Alert"></td>
+                    <td><input name='stockroom_new_product_name' style='width:100%' placeholder="New Product Name"></td>
+                    <td><input name='stockroom_new_stock_level' style='width:100%' placeholder="Initial Stock Level">
+                    </td>
+                    <td><input name='stockroom_new_stock_alert' style='width:100%' placeholder="Low Stock Alert"></td>
                 </tr>
                 <tr>
                     <th>Stock Purchase Price (Pence)
@@ -157,16 +194,20 @@ include "./includes/shared_php_functions.php";
             }
             ?>
 
-            <br><h3>Remove Product</h3>
+            <br>
+
+            <h3>Remove Product</h3>
             <table>
                 <tr>
                     <th>Product Name</th>
                 </tr>
                 <tr>
                     <td> <?php echo dropdown_menu('remove_product_name', $product_names, $product_names, 0); ?></td>
-                    <td><input name="remove_stockroom_product_submit" type="submit" value="Remove Product" /></td>
+                    <td><input name="remove_stockroom_product_submit" type="submit" value="Remove Product"/></td>
                 </tr>
             </table>
+
+            <button id='order_window_button' type="button" onclick="open_order_window()">Orders</button>
 
             <!--<h3>Quick Stock Amendment</h3>-->
 

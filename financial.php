@@ -6,14 +6,19 @@
     <script src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript">
-        $(function() {
 
-            var $sidebar   = $("#sorting_section"),
-                $window    = $(window),
-                offset     = $sidebar.offset(),
+        $(document).ready(function () {
+                $("table").tablesorter();
+            }
+        );
+        $(function () {
+
+            var $sidebar = $("#sorting_section"),
+                $window = $(window),
+                offset = $sidebar.offset(),
                 topPadding = 15;
 
-            $window.scroll(function() {
+            $window.scroll(function () {
                 if ($window.scrollTop() > offset.top) {
                     $sidebar.stop().animate({
                         marginTop: $window.scrollTop() - offset.top + topPadding
@@ -27,12 +32,6 @@
 
         });
 
-        $(document).ready(function()
-            {
-                $("table").tablesorter();
-            }
-        );
-
         function sort_table() {
             var request = $.ajax({
                 url: "financial_table_content.php?sort_type=" + $('#financial_sort_by_dropdown').val() + "&older_date=" + $('#older_date').val() + "&newer_date=" + $('#newer_date').val(),
@@ -42,6 +41,8 @@
 
             request.done(function (msg) {
                 $("#report_section").html(msg);
+                $("table").tablesorter();
+
             });
 
             request.fail(function (jqXHR, textStatus) {
@@ -113,7 +114,7 @@ $db_found = mysql_select_db($database, $db_handle);
         <div id='test_area' align="center"></div>
         <br><br><br>
 
-        <div id="download_area" align="center" style="border: 1px solid black;">
+        <div id="download_area" align="center">
             <h4>Download Table Content</h4>
             <input type="text" id="download_filename" placeholder="Enter Filename...">
             <button type='button' id="download_button" onclick='download_financial_table()'>Prepare Download</button>

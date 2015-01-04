@@ -8,8 +8,7 @@
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script>
 
-        $(document).ready(function()
-            {
+        $(document).ready(function () {
                 $("table").tablesorter();
             }
         );
@@ -42,13 +41,14 @@
 
         function filter_table() {
             var request = $.ajax({
-                url: "vending_table_content.php?vending_filter_dropdown=" + $('#vending_filter_dropdown').val()+ "&vending_filter_machine_id=" + $('#vending_filter_machine_id').val()+ "&vending_filter_product_name=" + $('#vending_filter_product_name').val()+ "&vending_filter_building=" + $('#vending_filter_building').val(),
+                url: "vending_table_content.php?vending_filter_dropdown=" + $('#vending_filter_dropdown').val() + "&vending_filter_machine_id=" + $('#vending_filter_machine_id').val() + "&vending_filter_product_name=" + $('#vending_filter_product_name').val() + "&vending_filter_building=" + $('#vending_filter_building').val() + "&vending_filter_quantity_value=" + $('#vending_filter_quantity_value').val() + "&vending_filter_quantity_direction=" + $('#vending_filter_quantity_direction').val(),
                 type: "GET",
                 dataType: "html"
             });
 
             request.done(function (msg) {
                 $("#table_section").html(msg);
+                $("table").tablesorter();
             });
 
             request.fail(function (jqXHR, textStatus) {
@@ -58,7 +58,6 @@
 
         function filter_selections(argument) {
             switch (argument) {
-
                 case "machine_id":
                     var result = "<input id='vending_filter_machine_id' placeholder='Machine ID?' type='text'>";
                     document.getElementById('filter_options').innerHTML = result;
@@ -71,19 +70,22 @@
                     var result = "Type start of name and click Filter<br><input id='vending_filter_building' placeholder='Building?' type='text'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
-
+                case "quantity":
+                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
                 default:
                     document.getElementById('filter_options').innerHTML = "";
             }
         }
 
-        function remove_machine(){
-            if(window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?")){
+        function remove_machine() {
+            if (window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?")) {
                 var request = $.ajax({
-                    url: "post.php?vending_remove_machine_dropdown=" + $('vending_remove_machine_dropdown').val(),
+                    url: "post.php?vending_remove_machine_dropdown=" + $('#vending_remove_machine_dropdown').val() + "&vending_remove_machine_submit='1'",
                     type: 'POST',
                     dataType: "html",
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data); // Inspect this in your console
                     }
                 });
@@ -97,7 +99,7 @@
                 });
 
             }
-            else{
+            else {
                 die("javascript");
             }
         }
@@ -121,8 +123,8 @@ include('./includes/menu.php');
 
     <div align=center id="left_column" style="float: left; width: 50%">
         <!--<table cellspacing='0' cellpadding='0'>-->
-            <!--php echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'building', 'best_before'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1); ?>
-            <button type='button' onclick='sort_table()'>Sort!</button><br>-->
+        <!--php echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'building', 'best_before'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1); ?>
+        <button type='button' onclick='sort_table()'>Sort!</button><br>-->
 
         <select id='vending_filter_dropdown' onchange="filter_selections(this.value)">
             <option value="no_filter" selected>No Filter</option>
@@ -131,8 +133,11 @@ include('./includes/menu.php');
             <option value="out_of_date">Out Of Date</option>
             <option value="product_name">Product Name</option>
             <option value="building">Building</option>
+            <option value="quantity">Quantity</option>
         </select>
-        <button type="button" onclick="filter_table()">Filter!</button><br>
+        <button type="button" onclick="filter_table()">Filter!</button>
+        <br>
+
         <div id="filter_options">
 
         </div>
@@ -144,38 +149,38 @@ include('./includes/menu.php');
 
 
             <!--<table class='center'>-->
-                <?php include('./includes/credentials.php');
-                $db_handle = mysql_connect($server, $user_name, $password);
-                $db_found = mysql_select_db($database, $db_handle);
+            <?php include('./includes/credentials.php');
+            $db_handle = mysql_connect($server, $user_name, $password);
+            $db_found = mysql_select_db($database, $db_handle);
 
-                date_default_timezone_set('Europe/London');
+            date_default_timezone_set('Europe/London');
 
-                /**
-                 * if($db_found){
-                 * $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id order by machine_id;";
-                 * $result = mysql_query($SQL);
-                 * print "<tr><th>Machine<th>Product<th>Quantity<th>Best Before</th></tr>";
-                 * while ($db_field = mysql_fetch_assoc($result)){
-                 * print "<tr><td>".$db_field['machine_id']."<td>".$db_field['product_name']."<td>".$db_field['quantity_in_machine'];
-                 *
-                 * if(strtotime($db_field['best_before'])<strtotime('now')){
-                 * print "<td BGCOLOR=\"#EE0000\">OUT OF DATE!</td></tr>";
-                 * }
-                 * else{
-                 * print "<td BGCOLOR=\"#00ff00\">IN DATE</td></tr>";
-                 * }
-                 * }
-                 * }
-                 *
-                 * else {
-                 * print "Database Access Error!";
-                 * mysql_close($db_handle);
-                 *
-                 * }
-                 **/
+            /**
+             * if($db_found){
+             * $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id order by machine_id;";
+             * $result = mysql_query($SQL);
+             * print "<tr><th>Machine<th>Product<th>Quantity<th>Best Before</th></tr>";
+             * while ($db_field = mysql_fetch_assoc($result)){
+             * print "<tr><td>".$db_field['machine_id']."<td>".$db_field['product_name']."<td>".$db_field['quantity_in_machine'];
+             *
+             * if(strtotime($db_field['best_before'])<strtotime('now')){
+             * print "<td BGCOLOR=\"#EE0000\">OUT OF DATE!</td></tr>";
+             * }
+             * else{
+             * print "<td BGCOLOR=\"#00ff00\">IN DATE</td></tr>";
+             * }
+             * }
+             * }
+             *
+             * else {
+             * print "Database Access Error!";
+             * mysql_close($db_handle);
+             *
+             * }
+             **/
 
-                include('./vending_table_content.php');
-                ?>
+            include('./vending_table_content.php');
+            ?>
             <!--</table>-->
         </div>
     </div>
@@ -227,17 +232,17 @@ include('./includes/menu.php');
             }
 
             $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="vending_table";';
-        $result = mysql_query($SQL);
-        while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-            array_push($vending_table_columns, $row['COLUMN_NAME']);
-        }
+            $result = mysql_query($SQL);
+            while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+                array_push($vending_table_columns, $row['COLUMN_NAME']);
+            }
 
-        #$product_array_items = array_unique($product_array_items);
-        $active_machine_array = array_unique($active_machine_array);
-        $machines_in_use_array = array_unique($machines_in_use_array);
-        sort($machines_in_use_array);
-        #sort($product_array_items);
-        ?>
+            #$product_array_items = array_unique($product_array_items);
+            $active_machine_array = array_unique($active_machine_array);
+            $machines_in_use_array = array_unique($machines_in_use_array);
+            sort($machines_in_use_array);
+            #sort($product_array_items);
+            ?>
 
 
             <div align=center>
@@ -311,11 +316,11 @@ include('./includes/menu.php');
                     <tr>
                     </thead>
                     <tbody>
-                        <td><input id='vending_new_machine_id' name="vending_new_machine_id" style="width:100%"
-                                   placeholder="Machine ID"/>
-                        <td><input name="vending_new_machine_building" style="width:100%" placeholder="Building"/>
-                        <td><input name="vending_new_machine_floor" style="width:100%" placeholder="Floor"/>
-                        <td><input name="vending_new_machine_submit" type="submit" value="Add Machine"/></td>
+                    <td><input id='vending_new_machine_id' name="vending_new_machine_id" style="width:100%"
+                               placeholder="Machine ID"/>
+                    <td><input name="vending_new_machine_building" style="width:100%" placeholder="Building"/>
+                    <td><input name="vending_new_machine_floor" style="width:100%" placeholder="Floor"/>
+                    <td><input name="vending_new_machine_submit" type="submit" value="Add Machine"/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -323,17 +328,17 @@ include('./includes/menu.php');
                 <h3>Alter Machine</h3>
                 <table cellspacing="0" cellpadding="0">
                     <thead>
-                        <tr>
-                            <th>Machine ID</th>
-                            <th>Attribute</th>
-                            <th>New Value</th>
-                        </tr>
+                    <tr>
+                        <th>Machine ID</th>
+                        <th>Attribute</th>
+                        <th>New Value</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <td><?php echo dropdown_menu('vending_alter_machine_id', $machines_in_use_array, $machines_in_use_array,1);?></td>
-                        <td><?php echo dropdown_menu('vending_alter_machine_attribute', ['machine_id','building','floor'],['Machine ID', 'Building', 'Floor'], 1)?></td>
-                        <td><input name="vending_alter_machine_value" style="width:100%" placeholder="New Value"/></td>
-                        <td><input name="vending_alter_machine_submit" type="submit" value="Alter Machine"/></td>
+                    <td><?php echo dropdown_menu('vending_alter_machine_id', $machines_in_use_array, $machines_in_use_array, 1); ?></td>
+                    <td><?php echo dropdown_menu('vending_alter_machine_attribute', ['machine_id', 'building', 'floor'], ['Machine ID', 'Building', 'Floor'], 1) ?></td>
+                    <td><input name="vending_alter_machine_value" style="width:100%" placeholder="New Value"/></td>
+                    <td><input name="vending_alter_machine_submit" type="submit" value="Alter Machine"/></td>
                     </tbody>
                 </table>
 
@@ -348,8 +353,9 @@ include('./includes/menu.php');
                             <?php
                             echo dropdown_menu('vending_remove_machine_dropdown', $machines_in_use_array, $machines_in_use_array, 0); ?>
                         <td><input name="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
-                        <button type="button" id="vending_remove_machine_submit" onclick="remove_machine()">Remove! JS</button>
-                        </tr>
+                        <button type="button" id="vending_remove_machine_submit" onclick="remove_machine()">Remove! JS
+                        </button>
+                    </tr>
 
 
                 </table>
@@ -357,8 +363,8 @@ include('./includes/menu.php');
 
         </form>
 
-    <!--</div>-->
-</div>
+        <!--</div>-->
+    </div>
 </div>
 <div class="clear"></div>
 </div>
