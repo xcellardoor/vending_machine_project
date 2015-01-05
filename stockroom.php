@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="./js/jquery.tablesorter/themes/blue/style.css">
     <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
 
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
 
@@ -12,8 +13,30 @@
 
         $(document).ready(function () {
                 $("table").tablesorter();
+                $('#remove_stockroom_product_submit').prop('disabled', true);
             }
         );
+
+
+        $(function () {
+            var $sidebar = $("#stockroom_amendment_section"),
+                $window = $(window),
+                offset = $sidebar.offset(),
+                topPadding = 15;
+
+            $window.scroll(function () {
+                if ($window.scrollTop() > offset.top) {
+                    $sidebar.stop().animate({
+                        marginTop: $window.scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $sidebar.stop().animate({
+                        marginTop: 0
+                    });
+                }
+            });
+
+        });
 
         function filter_selections(argument) {
 
@@ -120,7 +143,7 @@ include "./includes/shared_php_functions.php";
         <br>
 
     </div>
-    <div style='float: left; width: 50%' align=center>
+    <div style='float: left; width: 50%' align=center id="stockroom_amendment_section">
 
         <form name=stock_update' method='post' action='post.php'>
 
@@ -203,7 +226,10 @@ include "./includes/shared_php_functions.php";
                 </tr>
                 <tr>
                     <td> <?php echo dropdown_menu('remove_product_name', $product_names, $product_names, 0); ?></td>
-                    <td><input name="remove_stockroom_product_submit" type="submit" value="Remove Product"/></td>
+                    <td>Confirm Delete?<input type="checkbox" id="remove_stockroom_checkbox"
+                                              onclick="toggle_button('remove_stockroom_product_submit')"
+                                              id="remove_stockroom_checkbox" value="true"></td>
+                    <td><input id="remove_stockroom_product_submit" type="submit" value="Remove Product"/></td>
                 </tr>
             </table>
 

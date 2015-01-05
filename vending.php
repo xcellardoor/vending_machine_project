@@ -6,12 +6,35 @@
     <link rel="stylesheet" type="text/css" href="./js/jquery.tablesorter/themes/blue/style.css">
     <script src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
     <script>
 
         $(document).ready(function () {
                 $("table").tablesorter();
+                $('#vending_remove_machine_submit').prop('disabled', true);
             }
         );
+
+        $(function () {
+
+            var $sidebar = $("#vending_amendments_section"),
+                $window = $(window),
+                offset = $sidebar.offset(),
+                topPadding = 15;
+
+            $window.scroll(function () {
+                if ($window.scrollTop() > offset.top) {
+                    $sidebar.stop().animate({
+                        marginTop: $window.scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $sidebar.stop().animate({
+                        marginTop: 0
+                    });
+                }
+            });
+
+        });
 
         function validateForm(array) {
             for (var i in array) {
@@ -185,7 +208,7 @@ include('./includes/menu.php');
         </div>
     </div>
 
-    <div style="float: left; width: 50%">
+    <div style="float: left; width: 50%" id="vending_amendments_section">
 
 
         <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
@@ -260,7 +283,7 @@ include('./includes/menu.php');
                         <td> <?php echo dropdown_menu('alter_product_id', $product_array_values, $product_array_items, 0); ?>
                         <td>
                             <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 0); ?>
-                        <td> <?php echo dropdown_menu('alter_product_choice', $vending_table_columns, $vending_table_columns, 0); ?>
+                        <td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?>
 
                         <td><input name="alter_product_new_value" style="width:100%" placeholder="New Value"/></td>
                         <td><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
@@ -352,8 +375,11 @@ include('./includes/menu.php');
 
                             <?php
                             echo dropdown_menu('vending_remove_machine_dropdown', $machines_in_use_array, $machines_in_use_array, 0); ?>
-                        <td><input name="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
-                        <button type="button" id="vending_remove_machine_submit" onclick="remove_machine()">Remove! JS
+                        </td>
+                        <td>Confirm?<input type="checkbox" id="remove_vending_checkbox"
+                                           onclick="toggle_button('vending_remove_machine_submit')"
+                                           id="remove_vending_machine_checkbox" value="true"></td>
+                        <td><input id="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
                         </button>
                     </tr>
 

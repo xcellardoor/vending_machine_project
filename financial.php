@@ -32,9 +32,24 @@
 
         });
 
-        function sort_table() {
+        function filter_selections(argument) {
+            switch (argument) {
+                case "between_dates":
+                    var result = "<input id='between_dates_older_date' placeholder='Older Date?' type='date' value='2015-01-01'><input id='between_dates_newer_date' placeholder='Newer Date?' type='date' value='2015-01-01'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
+                case "popularity":
+                    var result = "<input id='popularity_older_date' placeholder='Older Date?' type='date' value='2015-01-01'><input id='popularity_newer_date' placeholder='Newer Date?' type='date' value='2015-01-01'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
+                default:
+                    document.getElementById('filter_options').innerHTML = "";
+            }
+        }
+
+        function filter_table() {
             var request = $.ajax({
-                url: "financial_table_content.php?sort_type=" + $('#financial_sort_by_dropdown').val() + "&older_date=" + $('#older_date').val() + "&newer_date=" + $('#newer_date').val(),
+                url: "financial_table_content.php?financial_sort_by_dropdown=" + $('#financial_sort_by_dropdown').val() + "&between_dates_older_date=" + $('#between_dates_older_date').val() + "&between_dates_newer_date=" + $('#between_dates_newer_date').val() + "&popularity_older_date=" + $('#popularity_older_date').val() + "&popularity_newer_date=" + $('#popularity_newer_date').val(),
                 type: "GET",
                 dataType: "html"
             });
@@ -95,23 +110,22 @@ $db_found = mysql_select_db($database, $db_handle);
 
     <div style="float: left; width: 50%" id="sorting_section">
         <div align="center">
+            <p>Filter Controls</p>
             <table cellspacing='0' cellpadding='0'>
                 <tr>
                     <td>
-                        <select id='financial_sort_by_dropdown' onchange="alter_table(this.value)">
-                            <option value="sale_number" selected>Sale Number</option>
-                            <option value="date_of_sale">Date of Sale</option>
-                            <option value="popularity_descending">Product Popularity (Descending)</option>
-                            <option value="popularity_ascending">Product_Popularity (Ascending)</option>
+                        <select id='financial_sort_by_dropdown' onchange="filter_selections(this.value)">
+                            <option value="no_filter" selected>No Filter...</option>
+                            <option value="between_dates">Between Dates</option>
+                            <option value="popularity">Product Popularity</option>
                         </select>
 
-                        <button type='button' onclick='sort_table()'>Sort!</button>
+                        <button type='button' onclick='filter_table()'>Filter!</button>
                     </td>
                 </tr>
             </table>
-
         </div>
-        <div id='test_area' align="center"></div>
+        <div id='filter_options' align="center"></div>
         <br><br><br>
 
         <div id="download_area" align="center">

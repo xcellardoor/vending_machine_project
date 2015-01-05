@@ -77,23 +77,23 @@ if ($db_found) {
 
     $result = mysql_query($SQL);
 
-    $reply="";
+    $reply = "";
 
     if ($db_found) {
         $result = mysql_query($SQL);
-        $reply.="<table class='tablesorter' id='stockroom_table'><thead><tr><th>Product Name<th>Remaining Stock<th>Purchase Price<th>Sale price<th>Low Stock Alert<th>Stock State</th></tr></thead><tbody>";
+        $reply .= "<table class='tablesorter' id='stockroom_table'><thead><tr><th>Product Name<th>Remaining Stock<th>Purchase Price<th>Sale price<th>Low Stock Alert<th>Stock State</th></tr></thead><tbody>";
         while ($db_field = mysql_fetch_assoc($result)) {
-            $reply.="<tr><td>" . $db_field['product_name'] . "<td>" . $db_field['remaining_stock'] . "<td>" . $db_field['stock_purchase_price'] . "<td>" . $db_field['stock_sale_price'] . "<td>" . $db_field['low_stock_alert'];
+            $reply .= "<tr><td>" . $db_field['product_name'] . "<td>" . $db_field['remaining_stock'] . "<td>" . $db_field['stock_purchase_price'] . "<td>" . $db_field['stock_sale_price'] . "<td>" . $db_field['low_stock_alert'];
 
             if ($db_field['low_stock_alert'] > $db_field['remaining_stock']) {
-                $reply.="<td BGCOLOR=\"#EE0000\">LOW!</td></tr>";
+                $reply .= "<td BGCOLOR=\"#EE0000\">LOW!</td></tr>";
             } else {
-                $reply.="<td BGCOLOR=\"#26D82F\">OK</td></tr>";
+                $reply .= "<td BGCOLOR=\"#26D82F\">OK</td></tr>";
             }
         }
         //MYSQL CLOSE could go here
     } else {
-        $reply.="Database Access Error!";
+        $reply .= "Database Access Error!";
         mysql_close($db_handle);
 
     }

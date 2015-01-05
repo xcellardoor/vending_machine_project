@@ -22,10 +22,39 @@
                 newwindow.focus()
             }
         }
+
+        function create_order_from_low_stock() {
+            var request = $.ajax({
+                url: "order_table_contents.php?create_from_low_stock=1",
+                type: "GET",
+                dataType: "html"
+            });
+
+            request.done(function (msg) {
+                $("#order_compose_content").html(msg);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        }
+
+        function download_order_table() {
+            /*var a = document.body.appendChild(
+             document.createElement("a")
+             );*/
+            var test = document.getElementById('download_area');
+            var new_button = document.createElement("a");
+            new_button.download = $('#download_filename').val() + ".html";
+            new_button.href = "data:text/html," + document.getElementById("order_compose_content").innerHTML;
+            new_button.innerHTML = "Ready - Click Here to Download";
+
+            test.appendChild(new_button);
+        }
     </script>
 
 </head>
-<title>Stockroom | Vending Machine Management System</title>
+<title>Orders | Vending Machine Management System</title>
 
 <body>
 
@@ -42,16 +71,24 @@ include "./includes/credentials.php";
     <div align="center"><h1>Order Management</h1></div>
 
     <div style='float: left; width: 50%' align=center id="past_orders">
-        <p>holder content</p>
+        <h3>Order Creation</h3>
+
+
+        <button id="create_order_from_low_stock_button" onclick="create_order_from_low_stock()">Auto-Create Order from
+            Low Stock
+        </button>
 
         <form name=order_creation' method='post' action='post.php'>
-            <input/>
-            <input/>
-            <input/>
-
 
         </form>
 
+        <div id="order_compose_content">
+
+        </div>
+        <div id="download_area" align="center">
+            <input type="text" id="download_filename" placeholder="Enter Filename...">
+            <button type='button' id="download_button" onclick='download_order_table()'>Prepare Download</button>
+        </div>
     </div>
     <div style="float: left; width: 50%" align="center">
 
@@ -68,11 +105,11 @@ include "./includes/credentials.php";
             #$conn = new mysqli($server, $user_name,)
 
             if ($db_found) {
-                $SQL = "SELECT * FROM order_history";
+                $SQL = "SELECT * FROM order_history INNER JOIN supplier_table ON order_history.supplier_id=supplier_table.supplier_id ORDER BY order_number;";
                 $result = mysql_query($SQL);
-                print "<thead><tr><th>Order Number<th>Supplier ID<th>Order Reference from Supplier<th>Order Date</th></tr></thead><tbody>";
+                print "<thead><tr><th>Order Number<th>Supplier<th>Order Reference from Supplier<th>Order Date</th></tr></thead><tbody>";
                 while ($db_field = mysql_fetch_assoc($result)) {
-                    print "<tr><td>" . $db_field['order_number'] . "<td>" . $db_field['supplier_id'] . "<td>" . $db_field['order_reference_from_supplier'] . "<td>" . $db_field['order_date'];
+                    print "<tr><td>" . $db_field['order_number'] . "<td>" . $db_field['supplier_name'] . "<td>" . $db_field['order_reference_from_supplier'] . "<td>" . $db_field['order_date'];
                 }
                 //MYSQL CLOSE could go here
             } else {
@@ -92,7 +129,7 @@ include "./includes/credentials.php";
     </div>
 
 </div>
-
+</div>
 <div class="clear"></div>
 </div>
 <?php

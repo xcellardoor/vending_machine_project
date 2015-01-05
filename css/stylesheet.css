@@ -109,6 +109,7 @@ nav ul li {
     list-style: none;
     float: left;
     margin: 10px 0px 0px 10px;
+
 }
 
 nav ul li a {
@@ -118,6 +119,7 @@ nav ul li a {
     background: #0075B2;
     display: inline-block;
     border: 1px solid #000;
+    border-radius: 25px;
 }
 
 nav ul li a:hover {
