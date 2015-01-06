@@ -26,7 +26,8 @@ include('./includes/menu.php');
         <div align="center">
             <button id="vending_button" type="button" style="width:100px;height:100px;">Vending</button>
             <button id="vending_button" type="button" style="width:100px;height:100px;">Stockroom</button>
-            <button id="vending_button" type="button" style="width:100px;height:100px;">Financial</button>
+            <button id="vending_button" link="./financial.php"type="button" style="width:100px;height:100px;">Financial</button>
+            <input TYPE="button" onClick="parent.location='./financial.php'">
         </div>
 
     </section>

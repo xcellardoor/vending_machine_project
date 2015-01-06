@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./js/jquery.tablesorter/themes/blue/style.css">
+    <link rel="icon" type="image/png" href="./includes/icon.png">
     <script src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>

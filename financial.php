@@ -3,6 +3,7 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="./js/jquery.tablesorter/themes/blue/style.css">
+    <link rel="icon" type="image/png" href="./includes/icon.png">
     <script src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript">
@@ -42,6 +43,10 @@
                     var result = "<input id='popularity_older_date' placeholder='Older Date?' type='date' value='2015-01-01'><input id='popularity_newer_date' placeholder='Newer Date?' type='date' value='2015-01-01'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
+                case "name":
+                    var result = "<input id='name_value' placeholder='Name?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
                 default:
                     document.getElementById('filter_options').innerHTML = "";
             }
@@ -49,7 +54,7 @@
 
         function filter_table() {
             var request = $.ajax({
-                url: "financial_table_content.php?financial_sort_by_dropdown=" + $('#financial_sort_by_dropdown').val() + "&between_dates_older_date=" + $('#between_dates_older_date').val() + "&between_dates_newer_date=" + $('#between_dates_newer_date').val() + "&popularity_older_date=" + $('#popularity_older_date').val() + "&popularity_newer_date=" + $('#popularity_newer_date').val(),
+                url: "financial_table_content.php?financial_sort_by_dropdown=" + $('#financial_sort_by_dropdown').val() + "&between_dates_older_date=" + $('#between_dates_older_date').val() + "&between_dates_newer_date=" + $('#between_dates_newer_date').val() + "&popularity_older_date=" + $('#popularity_older_date').val() + "&popularity_newer_date=" + $('#popularity_newer_date').val() + "&name_value=" + $('#name_value').val(),
                 type: "GET",
                 dataType: "html"
             });
@@ -116,6 +121,7 @@ $db_found = mysql_select_db($database, $db_handle);
                     <td>
                         <select id='financial_sort_by_dropdown' onchange="filter_selections(this.value)">
                             <option value="no_filter" selected>No Filter...</option>
+                            <option value="name">Name</option>
                             <option value="between_dates">Between Dates</option>
                             <option value="popularity">Product Popularity</option>
                         </select>
