@@ -1,3 +1,8 @@
+<?php if (session_status() === PHP_SESSION_NONE){session_start();}
+if ($_SESSION['authenticated'] != "true") {
+header("location:./authentication/login.php");
+} else {}
+?>
 <html>
 <head>
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
@@ -106,6 +111,7 @@
 <?php
 
 include("./includes/menu.php");
+
 include('./includes/credentials.php');
 $db_handle = mysql_connect($server, $user_name, $password);
 $db_found = mysql_select_db($database, $db_handle);

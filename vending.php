@@ -1,3 +1,4 @@
+<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
 <html>
 
 <head>
@@ -83,19 +84,19 @@
         function filter_selections(argument) {
             switch (argument) {
                 case "machine_id":
-                    var result = "<input id='vending_filter_machine_id' placeholder='Machine ID?' type='text'>";
+                    var result = "<input id='vending_filter_machine_id' placeholder='Machine ID?' pattern='[\d]{1,10}' title='Vending Machine ID Number (Max 10 numbers)'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 case "product_name":
-                    var result = "Type start of name and click Filter<br><input id='vending_filter_product_name' placeholder='Product Name?' type='text'>";
+                    var result = "Type start of name and click Filter<br><input id='vending_filter_product_name' placeholder='Product Name?' pattern='[\w\d\s\W\D\S]{1,50}' title='Maximum 50 character limit, no punctuation'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 case "building":
-                    var result = "Type start of name and click Filter<br><input id='vending_filter_building' placeholder='Building?' type='text'>";
+                    var result = "Type start of name and click Filter<br><input id='vending_filter_building' placeholder='Building?' pattern='[\w\d\s\W\D\S]{1,50}' title='Maximum 50 character limit, no punctuation'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 case "quantity":
-                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' type='text'>";
+                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern="[\d]{1,5}" title="Number - 0 to 99,999">";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 default:
@@ -139,6 +140,13 @@
 
 include('./includes/shared_php_functions.php'); //Import shared functions
 include('./includes/menu.php');
+
+if ($_SESSION['authenticated'] != "true") {
+    header("location:./authentication/login.php");
+} else {}
+
+date_default_timezone_set('Europe/London');
+
 ?>
 <div id="main-body">
 
@@ -146,10 +154,6 @@ include('./includes/menu.php');
 
 
     <div align=center id="left_column" style="float: left; width: 50%">
-        <!--<table cellspacing='0' cellpadding='0'>-->
-        <!--php echo dropdown_menu('vending_sort_by_dropdown', ['quantity_in_machine', 'machine_id', 'product_name', 'building', 'best_before'], ['Quantity', 'Vending Machine', 'Product Name', 'Building', 'Best Before'], 1); ?>
-        <button type='button' onclick='sort_table()'>Sort!</button><br>-->
-
         <select id='vending_filter_dropdown' onchange="filter_selections(this.value)">
             <option value="no_filter" selected>No Filter</option>
             <option value="machine_id">Machine ID</option>
@@ -166,46 +170,12 @@ include('./includes/menu.php');
 
         </div>
 
-
-        <!--</tr></table>-->
-
         <div align=center id='table_section'>
-
-
-            <!--<table class='center'>-->
             <?php include('./includes/credentials.php');
             $db_handle = mysql_connect($server, $user_name, $password);
             $db_found = mysql_select_db($database, $db_handle);
-
-            date_default_timezone_set('Europe/London');
-
-            /**
-             * if($db_found){
-             * $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id order by machine_id;";
-             * $result = mysql_query($SQL);
-             * print "<tr><th>Machine<th>Product<th>Quantity<th>Best Before</th></tr>";
-             * while ($db_field = mysql_fetch_assoc($result)){
-             * print "<tr><td>".$db_field['machine_id']."<td>".$db_field['product_name']."<td>".$db_field['quantity_in_machine'];
-             *
-             * if(strtotime($db_field['best_before'])<strtotime('now')){
-             * print "<td BGCOLOR=\"#EE0000\">OUT OF DATE!</td></tr>";
-             * }
-             * else{
-             * print "<td BGCOLOR=\"#00ff00\">IN DATE</td></tr>";
-             * }
-             * }
-             * }
-             *
-             * else {
-             * print "Database Access Error!";
-             * mysql_close($db_handle);
-             *
-             * }
-             **/
-
             include('./vending_table_content.php');
             ?>
-            <!--</table>-->
         </div>
     </div>
 
@@ -216,7 +186,8 @@ include('./includes/menu.php');
             <?php
 
             //onsubmit='return validateForm($test_array)
-            $active_machine_array = array();
+                $active_machine_array = array();
+
             $product_array_items = array();
             $machines_in_use_array = array();
             $product_array_values = array();
@@ -266,13 +237,15 @@ include('./includes/menu.php');
             $machines_in_use_array = array_unique($machines_in_use_array);
             sort($machines_in_use_array);
             #sort($product_array_items);
+
+
             ?>
 
 
             <div align=center>
 
                 <h3>Alter Product</h3>
-                <table cellspacing='0' cellpadding='0'>
+                <table>
                     <tr>
                         <th>Product Name</th>
                         <th>Vending Machine</th>
@@ -286,14 +259,14 @@ include('./includes/menu.php');
                             <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 0); ?>
                         <td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?>
 
-                        <td><input name="alter_product_new_value" style="width:100%" placeholder="New Value"/></td>
+                        <td>How to validate me too?<input name="alter_product_new_value" style="width:100%" placeholder="New Value" /></td>
                         <td><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>
                 </table>
 
                 <h3>Add Product</h3>
 
-                <table cellspacing='0' cellpadding='0'>
+                <table>
                     <tr>
                         <th>Product Name
                         <th>Machine ID
@@ -305,7 +278,7 @@ include('./includes/menu.php');
                             <?php echo dropdown_menu('add_product_name', $product_table_values, $product_table_options, 0); ?></td>
                         <td>
                             <?php echo dropdown_menu('add_vending_machine', $active_machine_array, $active_machine_array, 0); ?></td>
-                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity"/></td>
+                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity" pattern="[\d]{1,3}" title="Number, maximum 999"/></td>
                         <td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
                                    value='2015-01-01'/></td>
                         <td><input name="add_product_submit" type="submit" value="Add Product"/></td>
@@ -313,7 +286,7 @@ include('./includes/menu.php');
                 </table>
 
                 <h3>Remove Product</h3>
-                <table cellspacing='0' cellpadding='0'>
+                <table>
                     <tr>
                         <th>Product Name
                         <th>Vending Machine</th>
@@ -331,7 +304,7 @@ include('./includes/menu.php');
 
 
                 <h3>Add Machine</h3>
-                <table cellspacing='0' cellpadding='0'>
+                <table>
                     <thead>
                     <tr>
                         <th>New Machine ID
@@ -350,7 +323,7 @@ include('./includes/menu.php');
                 </table>
 
                 <h3>Alter Machine</h3>
-                <table cellspacing="0" cellpadding="0">
+                <table>
                     <thead>
                     <tr>
                         <th>Machine ID</th>
@@ -367,7 +340,7 @@ include('./includes/menu.php');
                 </table>
 
                 <h3>Remove Machine</h3>
-                <table cellpadding='0' cellspacing='0'>
+                <table>
                     <tr>
                         <th>Vending Machine</th>
                     </tr>
@@ -391,6 +364,7 @@ include('./includes/menu.php');
         </form>
 
         <!--</div>-->
+
     </div>
 </div>
 <div class="clear"></div>

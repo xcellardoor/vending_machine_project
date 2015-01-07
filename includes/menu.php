@@ -9,6 +9,7 @@
             <li><a href="../stockroom.php">Stockroom</a></li>
             <li><a href="../orders.php">Orders</a></li>
             <li><a href="../financial.php">Financial</a></li>
+            <li><a href="../authentication/logout.php">Logout</a></li>
         </ul>
     </nav>
     <div class="clear"></div>

@@ -94,7 +94,7 @@ if ($db_found) {
 
     $reply .= "</tbody></table>";
 } else {
-    echo "Error";
+    echo "<br><br><br><h2 style='color:red'>Database Connection Error</h2>";
 }
 
 if (strlen($reply) > 15) {

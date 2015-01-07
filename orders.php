@@ -1,3 +1,4 @@
+<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
 <!DOCTYPE HTML>
 <html>
 
@@ -63,6 +64,11 @@
 <?php
 
 include "./includes/menu.php";
+
+if ($_SESSION['authenticated'] != "true") {
+    header("location:./authentication/login.php");
+} else {}
+
 include "./includes/shared_php_functions.php";
 include "./includes/credentials.php";
 

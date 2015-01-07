@@ -1,3 +1,4 @@
+<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
 <html>
 
 <head>
@@ -7,7 +8,6 @@
     <link rel="icon" type="image/png" href="./includes/icon.png">
     <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
-
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
 
     <script>
@@ -38,6 +38,21 @@
             });
 
         });
+
+        $(document).ready(function () {
+            if ($("#database_check:contains('failure')").length =-1)
+            {
+                //document.getElementById("#database_check").setAttribute("id", "database_check_error");
+                $("#database_check").attr('id', "database_check_error");
+            }
+            else{
+                alert('test');
+            }
+
+
+        });
+
+        //function validate_form(){}
 
         function filter_selections(argument) {
 
@@ -76,6 +91,8 @@
             });
         }
 
+
+
         function open_order_window() {
             newwindow = window.open('./orders.php', 'name', 'height=600,width=800');
             if (window.focus) {
@@ -83,13 +100,9 @@
             }
         }
     </script>
-
+    <title>Stockroom | Vending Machine Management System</title>
 </head>
-<title>Stockroom | Vending Machine Management System</title>
-
 <body>
-
-
 <?php
 
 /**function dropdown_menu($name, array $values, array $options, $selected=null){
@@ -108,11 +121,18 @@
  *
  * return $dropdown;
  * }**/
-
 include "./includes/menu.php";
 include "./includes/shared_php_functions.php";
 
+if ($_SESSION['authenticated'] != "true") {
+    header("location:./authentication/login.php");
+} else {}
+
+error_reporting(E_ERROR);
+
 ?>
+
+<div id="database_check"></div>
 
 <div id="main-body">
     <div align="center"><h1>Stockroom Management</h1></div>
@@ -138,7 +158,6 @@ include "./includes/shared_php_functions.php";
         <div id="table_section">
             <?php
             include('./stockroom_table_content.php');
-
             ?>
         </div>
         <br>
@@ -146,9 +165,10 @@ include "./includes/shared_php_functions.php";
     </div>
     <div style='float: left; width: 50%' align=center id="stockroom_amendment_section">
 
-        <form name=stock_update' method='post' action='post.php'>
+        <form name='stock_update' method='post' action='post.php'>
 
             <?php
+
             $SQL = "SELECT * FROM product_table";
             $result = mysql_query($SQL);
 
@@ -176,7 +196,7 @@ include "./includes/shared_php_functions.php";
             echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
             ?>
 
-            <input name="new_product_value" size="15" placeholder="New Value"/>
+            How to validate me?!<input name="new_product_value" size="15" placeholder="New Value" title="Enter new value"/>
             <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
 
             <!--ADDITION-->
@@ -190,18 +210,18 @@ include "./includes/shared_php_functions.php";
                     <th>Low Stock Alert</th>
                 </tr>
                 <tr>
-                    <td><input name='stockroom_new_product_name' style='width:100%' placeholder="New Product Name"></td>
-                    <td><input name='stockroom_new_stock_level' style='width:100%' placeholder="Initial Stock Level">
+                    <td><input name='stockroom_new_product_name' style='width:100%' placeholder="New Product Name" pattern="[\w\d\s\W\D\S]{1,50}" title="Maximum 50 character limit, no punctuation"></td>
+                    <td><input name='stockroom_new_stock_level' pattern="[0-9]{1,5}" style='width:100%' placeholder="Initial Stock Level" title="Range from 0 to 99,999"/>
                     </td>
-                    <td><input name='stockroom_new_stock_alert' style='width:100%' placeholder="Low Stock Alert"></td>
+                    <td><input name='stockroom_new_stock_alert' style='width:100%' placeholder="Low Stock Alert" pattern="[0-9]{1,5}" title="Range from 0 to 99,999"></td>
                 </tr>
                 <tr>
-                    <th>Stock Purchase Price (Pence)
+                    <th>Stock Purchase Price (Pence)</th>
                     <th>Stock Sale Price (Pence)</th>
                 </tr>
                 <tr>
-                    <td><input name='stockroom_new_purchase_price' style='width:100%' placeholder="Purchase Price">
-                    <td><input name='stockroom_new_sale_price' style='width:100%' placeholder="New Sale Price"></td>
+                    <td><input name='stockroom_new_purchase_price' style='width:100%' placeholder="Purchase Price" pattern="[0-9]{1,3}" title="Value from 0 to 999"></td>
+                    <td><input name='stockroom_new_sale_price' style='width:100%' placeholder="New Sale Price" pattern="[0-9]{1,3}" title="Value from 0 to 999"></td>
                     <td><input name="stockroom_new_stock_submit" type="submit" value="Add Product"/></td>
                 </tr>
 
@@ -226,7 +246,7 @@ include "./includes/shared_php_functions.php";
                     <th>Product Name</th>
                 </tr>
                 <tr>
-                    <td> <?php echo dropdown_menu('remove_product_name', $product_names, $product_names, 0); ?></td>
+                    <td> <?php echo dropdown_menu('remove_product_name', $product_names, $product_names, 1); ?></td>
                     <td>Confirm Delete?<input type="checkbox" id="remove_stockroom_checkbox"
                                               onclick="toggle_button('remove_stockroom_product_submit')"
                                               id="remove_stockroom_checkbox" value="true"></td>

@@ -42,14 +42,10 @@ if (isset($_POST['remove_product_submit'])) {
 }
 
 if (isset($_POST['remove_stockroom_product_submit'])) {
-    if (isset($_POST['remove_stockroom_checkbox'])) {
-        $remove_product_name = $_POST['remove_product_name'];
-        $query = "DELETE FROM product_table WHERE product_name='$remove_product_name';";
-        mysql_query($query) or die ("Cannot update database");
-        header("location:stockroom.php");
-    } else {
-        header("location:stockroom.php");
-    }
+    $remove_product_name = $_POST['remove_product_name'];
+    $query = "DELETE FROM product_table WHERE product_name='$remove_product_name';";
+    mysql_query($query) or die ("Cannot update database");
+    header("location:stockroom.php");
 }
 
 if (isset($_POST['alter_product_submit'])) {
@@ -93,9 +89,9 @@ if (isset($_POST['vending_new_machine_submit'])) {
 
 }
 
-if (isset($_POST['vending_remove_machine_submit'])) {
+/*if (isset($_POST['vending_remove_machine_submit'])) {
     //*echo '<script>if(window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?"));</script>';
-    if ($_POST['remove_stockroom_checkbox'] == 'true') {
+   // if ($_POST['remove_stockroom_product_submit'] == 'true') {
 
 
         $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
@@ -107,7 +103,7 @@ if (isset($_POST['vending_remove_machine_submit'])) {
         //Do Nothing!! Don't touch anything!!
     }
 
-}
+}*/
 
 if (isset($_POST['vending_alter_machine_submit'])) {
     $machine_id = $_POST['vending_alter_machine_id'];

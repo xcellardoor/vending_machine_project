@@ -17,6 +17,33 @@ body {
     border: 1px solid #ccc;
 }
 
+#database_check_error{
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #b0e0e6;
+    text-align: center;
+}
+#database_check_success{
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #b0e0e6;
+    text-align: center;
+}
+
+#login_box{
+    clear:both;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:200px;
+    #position:fixed;
+    border: solid 1px black;
+    width:500px;
+    background: #35C9FF;
+    text-align:center;
+}
+
 .clear {
     clear: both
 }
@@ -105,7 +132,7 @@ nav ul {
 }
 
 nav ul li {
-    font-size: 18px;
+    font-size: 15px;
     list-style: none;
     float: left;
     margin: 10px 0px 0px 10px;

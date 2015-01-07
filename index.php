@@ -1,16 +1,34 @@
+<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
 <html>
 
 <head>
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-</head>
+
+
+    <?php echo '<!--';
+    print_r($_COOKIE);
+
+    var_dump($_SESSION);
+    echo '-->';
+
+
+    ?>
+    </head>
 <title>Vending Machine Management System</title>
 
 <body>
 
 <?php
 
+
+
+
 include('./includes/menu.php');
+if ($_SESSION['authenticated'] != "true") {
+    header("location:./authentication/login.php");
+} else {}
+
 ?>
 <div id="main-body">
 
@@ -24,10 +42,10 @@ include('./includes/menu.php');
             released for sale.</p>
 
         <div align="center">
-            <button id="vending_button" type="button" style="width:100px;height:100px;">Vending</button>
-            <button id="vending_button" type="button" style="width:100px;height:100px;">Stockroom</button>
-            <button id="vending_button" link="./financial.php"type="button" style="width:100px;height:100px;">Financial</button>
-            <input TYPE="button" onClick="parent.location='./financial.php'">
+            <input TYPE="button" onClick="parent.location='./vending.php'" style="width:100px;height:100px;" value="Vending"/>
+            <input TYPE="button" onClick="parent.location='./stockroom.php'" style="width:100px;height:100px;" value="Stockroom"/>
+            <input TYPE="button" onClick="parent.location='./orders.php'" style="width:100px;height:100px;" value="Orders"/>
+            <input TYPE="button" onClick="parent.location='./financial.php'" style="width:100px;height:100px;" value="Financial"/>
         </div>
 
     </section>
