@@ -1,5 +1,9 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+if ($_SESSION['authenticated'] != "true") {
+    header("location:./authentication/login.php");
+} else {
 } ?>
 <html>
 
@@ -253,7 +257,7 @@ date_default_timezone_set('Europe/London');
                     <tr>
                         <th>Product Name</th>
                         <th>Vending Machine</th>
-                        <th>Attribute to Alter</th>
+
                     </tr>
                     </thead>
                     <!--Since the same list of 'existing products in machines' is needed, we can borrow the line used for deleting-->
@@ -262,12 +266,12 @@ date_default_timezone_set('Europe/London');
                         <td> <?php echo dropdown_menu('alter_product_id', $product_array_values, $product_array_items, 0); ?>
                         <td>
                             <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 0); ?>
-                        <td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?>
+
                     </tbody>
-                        <thead><tr><th>New Value</th></tr></thead>
-                    <tbody><tr><td>How to validate me too?<input name="alter_product_new_value" style="width:100%"
-                                                          placeholder="New Value"/></td>
-                        <td><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
+                        <thead><tr><th>Attribute to Alter</th><th>New Value</th></tr></thead>
+                    <tbody><tr><td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?><td><input name="alter_product_new_value" style="width:100%"
+                                                          placeholder="New Value"/></td></tr>
+                        <tr><td colspan="2"><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>
                     </tbody>
                 </table>
