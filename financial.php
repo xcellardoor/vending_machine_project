@@ -1,7 +1,10 @@
-<?php if (session_status() === PHP_SESSION_NONE){session_start();}
+<?php if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if ($_SESSION['authenticated'] != "true") {
-header("location:./authentication/login.php");
-} else {}
+    header("location:./authentication/login.php");
+} else {
+}
 ?>
 <html>
 <head>
@@ -119,7 +122,17 @@ $db_found = mysql_select_db($database, $db_handle);
 <div id="main-body">
     <div align="center"><h1>Financial</h1></div>
 
-    <div style="float: left; width: 50%" id="sorting_section">
+    <div style="float: left; width: 66%">
+        <div align="center" id="report_section">
+
+            <script>
+                $("#report_section").load("financial_table_content.php");
+            </script>
+        </div>
+        <br>
+    </div>
+
+    <div style="float: left; width: 33%" id="sorting_section">
         <div align="center">
             <p>Filter Controls</p>
             <table cellspacing='0' cellpadding='0'>
@@ -149,16 +162,6 @@ $db_found = mysql_select_db($database, $db_handle);
 
     </div>
 
-
-    <div style="float: left; width: 50%">
-        <div align="center" id="report_section">
-
-            <script>
-                $("#report_section").load("financial_table_content.php");
-            </script>
-        </div>
-        <br>
-    </div>
 
     <div class="clear"></div>
 </div>

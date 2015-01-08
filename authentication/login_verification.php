@@ -38,7 +38,9 @@ if (!($stmt = $mysqli->prepare("INSERT INTO meep (id) VALUES (1)"))) {
 }*/
 //session_start();
 
-if (session_status() === PHP_SESSION_NONE){session_start();}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 
 #$_POST['user_user_input']="user";
@@ -47,8 +49,7 @@ if (session_status() === PHP_SESSION_NONE){session_start();}
 if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
     header("location:../index.php");
 
-}
-else{
+} else {
     include('../includes/credentials.php');
 
     $db_handle = mysql_connect($server, $user_name, $password);
@@ -70,14 +71,13 @@ else{
         $password_attempt = hash_hmac('sha512', $user_password_input . '|', $password_salt);
         echo "<br>Password Attempt: $password_attempt";
 
-        if($password_attempt==$password_hash){
+        if ($password_attempt == $password_hash) {
             echo "authenticated!";
-            $_SESSION['authenticated']="true";
+            $_SESSION['authenticated'] = "true";
             header("location:../index.php");
-        }
-        else{
+        } else {
             echo "got in the else";
-            $_SESSION['authenticated']="false";
+            $_SESSION['authenticated'] = "false";
             header("location:./login.php");
         }
 

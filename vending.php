@@ -1,4 +1,6 @@
-<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
+<?php if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+} ?>
 <html>
 
 <head>
@@ -6,7 +8,7 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./js/jquery.tablesorter/themes/blue/style.css">
     <link rel="icon" type="image/png" href="./includes/icon.png">
-    <script src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
     <script>
@@ -96,7 +98,7 @@
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 case "quantity":
-                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern="[\d]{1,5}" title="Number - 0 to 99,999">";
+                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern='[\d]{1,5}' title='Number - 0 to 99,999'";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 default:
@@ -143,7 +145,8 @@ include('./includes/menu.php');
 
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
-} else {}
+} else {
+}
 
 date_default_timezone_set('Europe/London');
 
@@ -153,7 +156,7 @@ date_default_timezone_set('Europe/London');
     <div align=center><h1>Vending Machine Management</h1></div>
 
 
-    <div align=center id="left_column" style="float: left; width: 50%">
+    <div align=center id="left_column" style="float: left; width: 66%">
         <select id='vending_filter_dropdown' onchange="filter_selections(this.value)">
             <option value="no_filter" selected>No Filter</option>
             <option value="machine_id">Machine ID</option>
@@ -179,14 +182,14 @@ date_default_timezone_set('Europe/London');
         </div>
     </div>
 
-    <div style="float: left; width: 50%" id="vending_amendments_section">
+    <div style="float: left; width: 33%" id="vending_amendments_section">
 
 
         <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
             <?php
 
             //onsubmit='return validateForm($test_array)
-                $active_machine_array = array();
+            $active_machine_array = array();
 
             $product_array_items = array();
             $machines_in_use_array = array();
@@ -246,57 +249,67 @@ date_default_timezone_set('Europe/London');
 
                 <h3>Alter Product</h3>
                 <table>
+                    <thead>
                     <tr>
                         <th>Product Name</th>
                         <th>Vending Machine</th>
                         <th>Attribute to Alter</th>
-                        <th>New Value</th>
                     </tr>
+                    </thead>
                     <!--Since the same list of 'existing products in machines' is needed, we can borrow the line used for deleting-->
+                    <tbody>
                     <tr>
                         <td> <?php echo dropdown_menu('alter_product_id', $product_array_values, $product_array_items, 0); ?>
                         <td>
                             <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 0); ?>
                         <td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?>
-
-                        <td>How to validate me too?<input name="alter_product_new_value" style="width:100%" placeholder="New Value" /></td>
+                    </tbody>
+                        <thead><tr><th>New Value</th></tr></thead>
+                    <tbody><tr><td>How to validate me too?<input name="alter_product_new_value" style="width:100%"
+                                                          placeholder="New Value"/></td>
                         <td><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <h3>Add Product</h3>
 
                 <table>
+                    <thead>
                     <tr>
-                        <th>Product Name
-                        <th>Machine ID
-                        <th>Quantity
-                        <th>Best-Before</th>
+                        <th>Product Name</th>
+                        <th>Machine ID</th>
+                        <th>Quantity</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>
                             <?php echo dropdown_menu('add_product_name', $product_table_values, $product_table_options, 0); ?></td>
                         <td>
                             <?php echo dropdown_menu('add_vending_machine', $active_machine_array, $active_machine_array, 0); ?></td>
-                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity" pattern="[\d]{1,3}" title="Number, maximum 999"/></td>
-                        <td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
+                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity" pattern="[\d]{1,3}"
+                                   title="Number, maximum 999"/></td></tr></tbody>
+                    <thead>
+                    <tr><th>Best-Before</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
                                    value='2015-01-01'/></td>
                         <td><input name="add_product_submit" type="submit" value="Add Product"/></td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <h3>Remove Product</h3>
                 <table>
                     <tr>
-                        <th>Product Name
+                        <th>Product Name </th>
                         <th>Vending Machine</th>
                     </tr>
                     <tr>
-                        <td>
-                            <?php echo dropdown_menu('remove_product_name', $product_array_values, $product_array_items, 0); ?>
-                        <td>
-                            <?php echo dropdown_menu('remove_vending_machine', $machines_in_use_array, $machines_in_use_array, 1); ?>
-                        <td>
+                        <td><?php echo dropdown_menu('remove_product_name', $product_array_values, $product_array_items, 0); ?></td>
+                        <td><?php echo dropdown_menu('remove_vending_machine', $machines_in_use_array, $machines_in_use_array, 1); ?></td>
                         <td><input name="remove_product_submit" type="submit" value="Remove Product"/></td>
                     </tr>
 
@@ -307,8 +320,8 @@ date_default_timezone_set('Europe/London');
                 <table>
                     <thead>
                     <tr>
-                        <th>New Machine ID
-                        <th>Building
+                        <th>New Machine ID </th>
+                        <th>Building </th>
                         <th>Floor (Optional)</th>
                     <tr>
                     </thead>
@@ -353,18 +366,11 @@ date_default_timezone_set('Europe/London');
                         <td>Confirm?<input type="checkbox" id="remove_vending_checkbox"
                                            onclick="toggle_button('vending_remove_machine_submit')"
                                            id="remove_vending_machine_checkbox" value="true"></td>
-                        <td><input id="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
+                        <td><input id="vending_remove_machine_submit" name="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
                         </button>
                     </tr>
-
-
                 </table>
-
-
         </form>
-
-        <!--</div>-->
-
     </div>
 </div>
 <div class="clear"></div>

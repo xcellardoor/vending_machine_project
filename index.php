@@ -1,4 +1,6 @@
-<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
+<?php if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+} ?>
 <html>
 
 <head>
@@ -14,7 +16,7 @@
 
 
     ?>
-    </head>
+</head>
 <title>Vending Machine Management System</title>
 
 <body>
@@ -27,7 +29,8 @@
 include('./includes/menu.php');
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
-} else {}
+} else {
+}
 
 ?>
 <div id="main-body">
@@ -42,10 +45,14 @@ if ($_SESSION['authenticated'] != "true") {
             released for sale.</p>
 
         <div align="center">
-            <input TYPE="button" onClick="parent.location='./vending.php'" style="width:100px;height:100px;" value="Vending"/>
-            <input TYPE="button" onClick="parent.location='./stockroom.php'" style="width:100px;height:100px;" value="Stockroom"/>
-            <input TYPE="button" onClick="parent.location='./orders.php'" style="width:100px;height:100px;" value="Orders"/>
-            <input TYPE="button" onClick="parent.location='./financial.php'" style="width:100px;height:100px;" value="Financial"/>
+            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./vending.php'"
+                   value="Vending"/>
+            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./stockroom.php'"
+                   value="Stockroom"/>
+            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./orders.php'"
+                   value="Orders"/>
+            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./financial.php'"
+                   value="Financial"/>
         </div>
 
     </section>

@@ -1,4 +1,6 @@
-<?php if (session_status() === PHP_SESSION_NONE){session_start();}?>
+<?php if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+} ?>
 <!DOCTYPE HTML>
 <html>
 
@@ -67,7 +69,8 @@ include "./includes/menu.php";
 
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
-} else {}
+} else {
+}
 
 include "./includes/shared_php_functions.php";
 include "./includes/credentials.php";
@@ -77,27 +80,7 @@ include "./includes/credentials.php";
 <div id="main-body">
     <div align="center"><h1>Order Management</h1></div>
 
-    <div style='float: left; width: 50%' align=center id="past_orders">
-        <h3>Order Creation</h3>
-
-
-        <button id="create_order_from_low_stock_button" onclick="create_order_from_low_stock()">Auto-Create Order from
-            Low Stock
-        </button>
-
-        <form name=order_creation' method='post' action='post.php'>
-
-        </form>
-
-        <div id="order_compose_content">
-
-        </div>
-        <div id="download_area" align="center">
-            <input type="text" id="download_filename" placeholder="Enter Filename...">
-            <button type='button' id="download_button" onclick='download_order_table()'>Prepare Download</button>
-        </div>
-    </div>
-    <div style="float: left; width: 50%" align="center">
+    <div style="float: left; width: 66%" align="center">
 
         <table class='tablesorter' id="order">
             <input type="text" placeholder="Order Number" id="order_history_order_number"/>
@@ -127,16 +110,37 @@ include "./includes/credentials.php";
             ?>
             </tbody>
         </table>
+
+    </div>
+
+    <div style='float: left; width: 33%' align=center id="past_orders">
+        <h3>Order Creation</h3>
+
+
+        <button id="create_order_from_low_stock_button" onclick="create_order_from_low_stock()">Auto-Create Order from
+            Low Stock
+        </button>
+
+        <br><br><form name=order_creation' method='post' action='post.php'>
+
+        </form>
+
+        <div id="order_compose_content"></div>
+
+        <div id="download_area" align="center">
+            <input type="text" id="download_filename" placeholder="Enter Filename...">
+            <button type='button' id="download_button" onclick='download_order_table()'>Prepare Download</button>
+        </div>
         <br>
 
 
         <h3>Suppliers</h3>
         <button onclick="show_suppliers()">Click to show suppliers</button>
-        <div id="supplier_section"
+        <div id="supplier_section"></div>
+
     </div>
 
-</div>
-</div>
+
 <div class="clear"></div>
 </div>
 <?php

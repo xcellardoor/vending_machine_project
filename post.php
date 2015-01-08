@@ -10,13 +10,11 @@ if (isset($_POST['stockroom_alter_product_submit'])) {
     $new_value = $_POST['new_product_value'];
     $product_name = $_POST['product_list'];
     $column_array = $_POST['column_list'];
-
     $query = "UPDATE product_table SET $column_array ='$new_value' WHERE product_name='$product_name';";
     print $query;
     #die("test");
     mysql_query($query) or die ("Cannot update database");
     header("location:stockroom.php");
-
 }
 
 if (isset($_POST['add_product_submit'])) {
@@ -25,9 +23,12 @@ if (isset($_POST['add_product_submit'])) {
     $new_machine_id = $_POST['add_vending_machine'];
     $new_quantity_in_machine = $_POST['new_quantity'];
     $new_best_before = $_POST['new_best_before'];
-
     $query = "INSERT INTO vending_table (product_id, machine_id, quantity_in_machine, best_before) VALUES ('$new_product_id', '$new_machine_id', '$new_quantity_in_machine', '$new_best_before');";
     mysql_query($query) or die ("Cannot update database");
+    $query = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
+    mysql_query($query) or die ("Cannot update database");
+
+
     header("location:vending.php");
 }
 
@@ -89,21 +90,12 @@ if (isset($_POST['vending_new_machine_submit'])) {
 
 }
 
-/*if (isset($_POST['vending_remove_machine_submit'])) {
-    //*echo '<script>if(window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?"));</script>';
-   // if ($_POST['remove_stockroom_product_submit'] == 'true') {
-
-
+if (isset($_POST['vending_remove_machine_submit'])) {
         $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
-        //echo $machine_to_delete;
         $query = "DELETE FROM machine_table WHERE machine_id='$machine_id';";
         mysql_query($query) or die ("Unable to delete Vending Machine");
         header("location:vending.php");
-    } else {
-        //Do Nothing!! Don't touch anything!!
-    }
-
-}*/
+}
 
 if (isset($_POST['vending_alter_machine_submit'])) {
     $machine_id = $_POST['vending_alter_machine_id'];

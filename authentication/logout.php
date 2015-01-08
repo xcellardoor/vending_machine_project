@@ -4,7 +4,6 @@ session_destroy();
 
 
 /**
-
  * Created by PhpStorm.
  * User: cellardoor
  * Date: 07/01/15
