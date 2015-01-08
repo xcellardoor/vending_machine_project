@@ -24,12 +24,10 @@ if ($_SESSION['authenticated'] != "true") {
         );
 
         $(function () {
-
             var $sidebar = $("#vending_amendments_section"),
                 $window = $(window),
                 offset = $sidebar.offset(),
                 topPadding = 15;
-
             $window.scroll(function () {
                 if ($window.scrollTop() > offset.top) {
                     $sidebar.stop().animate({
@@ -102,7 +100,7 @@ if ($_SESSION['authenticated'] != "true") {
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 case "quantity":
-                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern='[\d]{1,5}' title='Number - 0 to 99,999'";
+                    var result = "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern='[\d]{1,5}' title='Number - 0 to 99,999'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
                 default:
@@ -134,8 +132,6 @@ if ($_SESSION['authenticated'] != "true") {
                 die("javascript");
             }
         }
-
-
     </script>
 </head>
 <title>Vending Machines</title>
@@ -158,7 +154,6 @@ date_default_timezone_set('Europe/London');
 <div id="main-body">
 
     <div align=center><h1>Vending Machine Management</h1></div>
-
 
     <div align=center id="left_column" style="float: left; width: 66%">
         <select id='vending_filter_dropdown' onchange="filter_selections(this.value)">
@@ -188,13 +183,9 @@ date_default_timezone_set('Europe/London');
 
     <div style="float: left; width: 33%" id="vending_amendments_section">
 
-
         <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
             <?php
-
-            //onsubmit='return validateForm($test_array)
             $active_machine_array = array();
-
             $product_array_items = array();
             $machines_in_use_array = array();
             $product_array_values = array();
@@ -238,16 +229,10 @@ date_default_timezone_set('Europe/London');
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                 array_push($vending_table_columns, $row['COLUMN_NAME']);
             }
-
-            #$product_array_items = array_unique($product_array_items);
             $active_machine_array = array_unique($active_machine_array);
             $machines_in_use_array = array_unique($machines_in_use_array);
             sort($machines_in_use_array);
-            #sort($product_array_items);
-
-
             ?>
-
 
             <div align=center>
 
@@ -269,7 +254,7 @@ date_default_timezone_set('Europe/London');
 
                     </tbody>
                         <thead><tr><th>Attribute to Alter</th><th>New Value</th></tr></thead>
-                    <tbody><tr><td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID', 'Quantity in Machine', 'Best Before'], 1); ?><td><input name="alter_product_new_value" style="width:100%"
+                    <tbody><tr><td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID (Move Product)', 'Quantity in Machine', 'Best Before'], 1); ?><td><input name="alter_product_new_value" style="width:100%"
                                                           placeholder="New Value"/></td></tr>
                         <tr><td colspan="2"><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>

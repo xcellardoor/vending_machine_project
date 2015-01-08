@@ -5,7 +5,6 @@ include('./includes/credentials.php');
 $db_handle = mysql_connect($server, $user_name, $password);
 $db_found = mysql_select_db($database, $db_handle);
 
-
 if (isset($_POST['stockroom_alter_product_submit'])) {
     $new_value = $_POST['new_product_value'];
     $product_name = $_POST['product_list'];
@@ -27,13 +26,10 @@ if (isset($_POST['add_product_submit'])) {
     mysql_query($query) or die ("Cannot update database");
     $query = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
     mysql_query($query) or die ("Cannot update database");
-
-
     header("location:vending.php");
 }
 
 if (isset($_POST['remove_product_submit'])) {
-    #vars
     $product_id = $_POST['remove_product_name'];
     $machine_id = $_POST['remove_vending_machine'];
     print $machine_id . " " . $product_id;
@@ -92,7 +88,7 @@ if (isset($_POST['vending_new_machine_submit'])) {
 
 if (isset($_POST['vending_remove_machine_submit'])) {
         $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
-        $query = "DELETE FROM machine_table WHERE machine_id='$machine_id';";
+        $query = "DELETE FROM machine_table WHERE machine_id='$machine_to_delete';";
         mysql_query($query) or die ("Unable to delete Vending Machine");
         header("location:vending.php");
 }
