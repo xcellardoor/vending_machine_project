@@ -104,7 +104,6 @@ if ($_SESSION['authenticated'] != "true") {
 <?php
 include "./includes/menu.php";
 include "./includes/shared_php_functions.php";
-
 ?>
 
 <div id="main-body">
@@ -141,22 +140,21 @@ include "./includes/shared_php_functions.php";
         <form name='stock_update' method='post' action='post.php'>
 
             <?php
-
             $SQL = "SELECT * FROM product_table";
-            $result = mysql_query($SQL);
+            $result = $connection->query($SQL);
 
             $product_array = array();
             $column_array = array();
 
-            while ($db_field = mysql_fetch_assoc($result)) {
+            while ($db_field = $result->fetch_assoc()) {
                 array_push($product_array, $db_field['product_name']);
             }
 
             $selected = 0;
 
             $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="product_table";';
-            $result = mysql_query($SQL);
-            while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $result = $connection->query($SQL);
+            while ($row = $result->fetch_assoc()) {
                 array_push($column_array, $row['COLUMN_NAME']);
 
             }
@@ -165,7 +163,6 @@ include "./includes/shared_php_functions.php";
 
             <?php
             echo dropdown_menu('product_list', $product_array, $product_array, 1);
-            //echo dropdown_menu('column_list', $column_array, $column_array, 1);
             echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
             ?>
 
@@ -210,9 +207,9 @@ include "./includes/shared_php_functions.php";
             $product_names = array();
 
             $SQL = 'select * from product_table;';
-            $result = mysql_query($SQL);
+            $result = $connection->query($SQL);
 
-            while ($db_field = mysql_fetch_assoc($result)) {
+            while ($db_field = $result->fetch_assoc()) {
                 array_push($product_names, $db_field['product_name']);
             }
             ?>
@@ -240,7 +237,7 @@ include "./includes/shared_php_functions.php";
 </div>
 <?php
 include('./includes/footer.php');
-mysql_close($db_handle);
+$connection->close()
 ?>
 
 </body>

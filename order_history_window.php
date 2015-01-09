@@ -55,3 +55,5 @@ else{
     echo "0 results";
 }
     echo '</div>';
+
+$connection->close();

@@ -2,20 +2,9 @@
     session_start();
 } ?>
 <html>
-
 <head>
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-
-
-    <?php echo '<!--';
-    print_r($_COOKIE);
-
-    var_dump($_SESSION);
-    echo '-->';
-
-
-    ?>
 </head>
 <title>Vending Machine Management System</title>
 

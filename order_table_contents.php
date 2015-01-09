@@ -14,8 +14,15 @@ if (isset($_REQUEST['vending_filter_dropdown'])) {
 
 include('./includes/credentials.php');
 
-$db_handle = mysql_connect($server, $user_name, $password);
-$db_found = mysql_select_db($database, $db_handle);
+//$db_handle = mysql_connect($server, $user_name, $password);
+//$db_found = mysql_select_db($database, $db_handle);
+
+$connection = new mysqli($server, $user_name, $password, $database);
+if($connection->connect_error){
+    die ("Connection failed: " . $connection->connect_error);
+}
+$result = $connection->query($SQL);
+
 
 if ($_REQUEST['create_from_low_stock'] = '1') {
     $SQL = "SELECT * FROM product_table WHERE remaining_stock<=low_stock_alert;";
@@ -23,24 +30,22 @@ if ($_REQUEST['create_from_low_stock'] = '1') {
 
 date_default_timezone_set('Europe/London');
 
-if ($db_found) {
-    $result = mysql_query($SQL);
+    $result = $connection->query($SQL);
 
     $reply = "<table id='table' class='tablesorter'>";
     $reply .= "<thead><tr><th>Product Name</th></tr></thead><tbody><td BGCOLOR='#EE0000'>LOW STOCK</td>";
 
-    while ($db_field = mysql_fetch_assoc($result)) {
+    while ($db_field = $result->fetch_assoc()) {
         $reply .= "<tr><td>" . $db_field['product_name']."</tr>";
 
     }
 
     $reply .= "</tbody></table>";
-} else {
-    echo "Error";
-}
 
 if (strlen($reply) > 15) {
     echo $reply;
 } else {
     echo "<h2>No Results</h2>";
 }
+
+$connection->close();

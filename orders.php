@@ -44,9 +44,6 @@
         }
 
         function download_order_table() {
-            /*var a = document.body.appendChild(
-             document.createElement("a")
-             );*/
             var test = document.getElementById('download_area');
             var new_button = document.createElement("a");
             new_button.download = $('#download_filename').val() + ".html";
@@ -85,25 +82,20 @@ include "./includes/credentials.php";
             <?php
             include('./includes/credentials.php');
 
-            $db_handle = mysql_connect($server, $user_name, $password);
-            $db_found = mysql_select_db($database, $db_handle);
+            //$db_handle = mysql_connect($server, $user_name, $password);
+            //$db_found = mysql_select_db($database, $db_handle);
+            $connection = new mysqli($server, $user_name, $password, $database);
+            if($connection->connect_error){
+                die("Connection failed: " . $connection->connect_error);
+            }
 
-
-            #$conn = new mysqli($server, $user_name,)
-
-            if ($db_found) {
                 $SQL = "SELECT * FROM order_history INNER JOIN supplier_table ON order_history.supplier_id=supplier_table.supplier_id ORDER BY order_number;";
-                $result = mysql_query($SQL);
+                $result = $connection->query($SQL);
                 print "<thead><tr><th>Order Number<th>Supplier<th>Order Reference from Supplier<th>Order Date</th></tr></thead><tbody>";
-                while ($db_field = mysql_fetch_assoc($result)) {
+                while ($db_field = $result->fetch_assoc()) {
                     print "<tr><td>" . $db_field['order_number'] . "<td>" . $db_field['supplier_name'] . "<td>" . $db_field['order_reference_from_supplier'] . "<td>" . $db_field['order_date'];
                 }
-                //MYSQL CLOSE could go here
-            } else {
-                print "Database Access Error!";
-                mysql_close($db_handle);
-
-            }
+                $connection->close();
             ?>
             </tbody>
         </table>
@@ -139,20 +131,14 @@ include "./includes/credentials.php";
             <button type='button' id="download_button" onclick='download_order_table()'>Prepare Download</button>
         </div>
         <br>
-
-
         <h3>Suppliers</h3>
         <button onclick="show_suppliers()">Click to show suppliers</button>
         <div id="supplier_section"></div>
-
     </div>
-
-
     <div class="clear"></div>
 </div>
 <?php
 include('./includes/footer.php');
-mysql_close($db_handle);
 ?>
 
 </body>

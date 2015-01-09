@@ -173,8 +173,8 @@ date_default_timezone_set('Europe/London');
 
         <div id='table_section'>
             <?php include('./includes/credentials.php');
-            $db_handle = mysql_connect($server, $user_name, $password);
-            $db_found = mysql_select_db($database, $db_handle);
+            //$db_handle = mysql_connect($server, $user_name, $password);
+            //$db_found = mysql_select_db($database, $db_handle);
             include('./vending_table_content.php');
             ?>
         </div>
@@ -194,39 +194,31 @@ date_default_timezone_set('Europe/London');
 
             #$SQL = "SELECT * FROM vending_table";
             $SQL = 'SELECT * FROM vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id;';
-            $result = mysql_query($SQL);
+            $result = $connection->query($SQL);
 
-            while ($db_field = mysql_fetch_assoc($result)) {
+            while ($db_field = $result->fetch_assoc()) {
                 array_push($machines_in_use_array, $db_field['machine_id']);
-            }
-            $result = mysql_query($SQL);
-            while ($db_field = mysql_fetch_assoc($result)) {
-                //array_push($product_array, $db_field['product_id']);
                 array_push($product_array_items, $db_field['product_name']);
-            }
-
-            $result = mysql_query($SQL);
-            while ($db_field = mysql_fetch_assoc($result)) {
                 array_push($product_array_values, $db_field['product_id']);
             }
 
             $SQL = "SELECT machine_id FROM machine_table";
-            $result = mysql_query($SQL);
-            while ($db_field = mysql_fetch_assoc($result)) {
+            $result = $connection->query($SQL);
+            while ($db_field = $result->fetch_assoc()) {
                 array_push($active_machine_array, $db_field['machine_id']);
             }
 
             $SQL = "SELECT * from product_table;";
-            $result = mysql_query($SQL);
-            while ($db_field = mysql_fetch_assoc($result)) {
+            $result = $connection->query($SQL);
+            while ($db_field = $result->fetch_assoc()) {
                 array_push($product_table_values, $db_field['product_id']);
                 array_push($product_table_options, $db_field['product_name']);
             }
 
             $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="vending_table";';
-            $result = mysql_query($SQL);
-            while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-                array_push($vending_table_columns, $row['COLUMN_NAME']);
+            $result = $connection->query($SQL);
+            while ($db_field = $result->fetch_assoc()) {
+                array_push($vending_table_columns, $db_field['COLUMN_NAME']);
             }
             $active_machine_array = array_unique($active_machine_array);
             $machines_in_use_array = array_unique($machines_in_use_array);
@@ -234,7 +226,7 @@ date_default_timezone_set('Europe/London');
             ?>
 
             <div align=center>
-                <h3>Add Product</h3>
+                <h3>Add Product To Machine</h3>
                 <table>
                     <thead>
                     <tr>
@@ -267,7 +259,7 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
-                <h3>Alter Product</h3>
+                <h3>Alter Product in Machine</h3>
                 <table>
                     <thead>
                     <tr>
@@ -302,7 +294,7 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
-                <h3>Remove Product</h3>
+                <h3>Remove Product from Machine</h3>
                 <table>
                     <tr>
                         <th>Product Name</th>
@@ -317,7 +309,7 @@ date_default_timezone_set('Europe/London');
                 </table>
 
 
-                <h3>Add Machine</h3>
+                <h3>Add Machine to Database</h3>
                 <table>
                     <thead>
                     <tr>
@@ -336,7 +328,7 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
-                <h3>Alter Machine</h3>
+                <h3>Alter Machine in Database</h3>
                 <table>
                     <thead>
                     <tr>
@@ -353,7 +345,7 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
-                <h3>Remove Machine</h3>
+                <h3>Remove Machine from Database</h3>
                 <table>
                     <tr>
                         <th>Vending Machine</th>
@@ -379,7 +371,7 @@ date_default_timezone_set('Europe/London');
 </div>
 <?php
 include('./includes/footer.php');
-mysql_close($db_handle);
+$connection->close()
 ?>
 
 </body>

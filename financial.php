@@ -112,13 +112,9 @@ if ($_SESSION['authenticated'] != "true") {
 <body>
 
 <?php
-
 include("./includes/menu.php");
-
-include('./includes/credentials.php');
-$db_handle = mysql_connect($server, $user_name, $password);
-$db_found = mysql_select_db($database, $db_handle);
 ?>
+
 <div id="main-body">
     <div class="page_function_title"><h1>Financial</h1></div>
 

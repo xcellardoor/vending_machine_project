@@ -2,18 +2,28 @@
 
 include('./includes/credentials.php');
 
-$db_handle = mysql_connect($server, $user_name, $password);
-$db_found = mysql_select_db($database, $db_handle);
+//$db_handle = mysql_connect($server, $user_name, $password);
+//$db_found = mysql_select_db($database, $db_handle);
+
+$connection = new mysqli($server, $user_name, $password, $database);
+if ($connection->connect_error){
+    die("Connection failed: " . $connection->connect_error);
+}
 
 if (isset($_POST['stockroom_alter_product_submit'])) {
     $new_value = $_POST['new_product_value'];
     $product_name = $_POST['product_list'];
     $column_array = $_POST['column_list'];
-    $query = "UPDATE product_table SET $column_array ='$new_value' WHERE product_name='$product_name';";
-    print $query;
-    #die("test");
-    mysql_query($query) or die ("Cannot update database");
+    $SQL = "UPDATE product_table SET $column_array ='$new_value' WHERE product_name='$product_name';";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:stockroom.php");
+    $connection->close();
 }
 
 if (isset($_POST['add_product_submit'])) {
@@ -22,27 +32,55 @@ if (isset($_POST['add_product_submit'])) {
     $new_machine_id = $_POST['add_vending_machine'];
     $new_quantity_in_machine = $_POST['new_quantity'];
     $new_best_before = $_POST['new_best_before'];
-    $query = "INSERT INTO vending_table (product_id, machine_id, quantity_in_machine, best_before) VALUES ('$new_product_id', '$new_machine_id', '$new_quantity_in_machine', '$new_best_before');";
-    mysql_query($query) or die ("Cannot update database");
-    $query = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
-    mysql_query($query) or die ("Cannot update database");
+
+    $SQL = "INSERT INTO vending_table (product_id, machine_id, quantity_in_machine, best_before) VALUES ('$new_product_id', '$new_machine_id', '$new_quantity_in_machine', '$new_best_before');";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
+
+    $SQL = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 }
 
 if (isset($_POST['remove_product_submit'])) {
     $product_id = $_POST['remove_product_name'];
     $machine_id = $_POST['remove_vending_machine'];
     print $machine_id . " " . $product_id;
-    $query = "DELETE FROM vending_table WHERE product_id='$product_id' and machine_id='$machine_id';";
-    mysql_query($query) or die ("Cannot update database");
+    $SQL = "DELETE FROM vending_table WHERE product_id='$product_id' and machine_id='$machine_id';";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 }
 
 if (isset($_POST['remove_stockroom_product_submit'])) {
     $remove_product_name = $_POST['remove_product_name'];
-    $query = "DELETE FROM product_table WHERE product_name='$remove_product_name';";
-    mysql_query($query) or die ("Cannot update database");
+    $SQL = "DELETE FROM product_table WHERE product_name='$remove_product_name';";
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:stockroom.php");
+    $connection->close();;
 }
 
 if (isset($_POST['alter_product_submit'])) {
@@ -50,9 +88,16 @@ if (isset($_POST['alter_product_submit'])) {
     $alter_machine_id = $_POST['alter_machine_id'];
     $alter_product_choice = $_POST['alter_product_choice'];
     $alter_product_new_value = $_POST['alter_product_new_value'];
-    $query = "UPDATE vending_table set $alter_product_choice = $alter_product_new_value where product_id = $alter_product_id and machine_id=$alter_machine_id;";
-    mysql_query($query) or die ("Unable to Alter Product");
+    $SQL = "UPDATE vending_table set $alter_product_choice = $alter_product_new_value where product_id = $alter_product_id and machine_id=$alter_machine_id;";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 }
 
 if (isset($_POST['stockroom_new_stock_submit'])) {
@@ -68,10 +113,16 @@ if (isset($_POST['stockroom_new_stock_submit'])) {
     $highest_product_id = $highest_product_id_fetch['max'];
 
 
-    $query = "INSERT INTO product_table (product_name, stock_purchase_price, stock_sale_price, remaining_stock, low_stock_alert) VALUES ('$product_name', '$purchase_price', '$sale_price', '$stock_level', '$stock_alert');";
+    $SQL = "INSERT INTO product_table (product_name, stock_purchase_price, stock_sale_price, remaining_stock, low_stock_alert) VALUES ('$product_name', '$purchase_price', '$sale_price', '$stock_level', '$stock_alert');";
 
-    mysql_query($query) or die ("Unable to Add Product to Stockroom");
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:stockroom.php");
+    $connection->close();
 }
 
 if (isset($_POST['vending_new_machine_submit'])) {
@@ -79,17 +130,31 @@ if (isset($_POST['vending_new_machine_submit'])) {
     $building = $_POST['vending_new_machine_building'];
     $floor = $_POST['vending_new_machine_floor'];
 
-    $query = "INSERT INTO machine_table (machine_id, building, floor) VALUES ('$machine_id', '$building', '$floor');";
-    mysql_query($query) or die ("Unable to Add Machine to Machine Table");
+    $SQL = "INSERT INTO machine_table (machine_id, building, floor) VALUES ('$machine_id', '$building', '$floor');";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 
 }
 
 if (isset($_POST['vending_remove_machine_submit'])) {
     $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
-    $query = "DELETE FROM machine_table WHERE machine_id='$machine_to_delete';";
-    mysql_query($query) or die ("Unable to delete Vending Machine");
+    $SQL = "DELETE FROM machine_table WHERE machine_id='$machine_to_delete';";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 }
 
 if (isset($_POST['vending_alter_machine_submit'])) {
@@ -97,14 +162,20 @@ if (isset($_POST['vending_alter_machine_submit'])) {
     $attribute_to_alter = $_POST['vending_alter_machine_attribute'];
     $new_value = $_POST['vending_alter_machine_value'];
 
-    $query = "UPDATE machine_table set $attribute_to_alter = '$new_value' where machine_id=$machine_id;";
-    mysql_query($query) or die ("Unable to Alter Machine");
+    $SQL = "UPDATE machine_table set $attribute_to_alter = '$new_value' where machine_id=$machine_id;";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
     header("location:vending.php");
+    $connection->close();
 
 } else {
     die("No value set");
+    $connection->close();
 }
-
-mysql_close($db_handle);
 
 ?>
