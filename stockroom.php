@@ -138,7 +138,7 @@ include "./includes/shared_php_functions.php";
         <br>
 
     </div>
-    <div style='float: left; width: 33%' align=center id="stockroom_amendment_section">
+    <div id="stockroom_amendments_section">
 
         <form name='stock_update' method='post' action='post.php'>
 
@@ -172,7 +172,7 @@ include "./includes/shared_php_functions.php";
             ?>
 
             How to validate me?!<input name="new_product_value" size="15" placeholder="New Value"
-                                       title="Enter new value"/>
+                                       title="Enter new value" pattern="([0-9]{1,5})|"/>
             <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
 
             <!--ADDITION-->
@@ -188,7 +188,7 @@ include "./includes/shared_php_functions.php";
                 <tr>
                     <td><input name='stockroom_new_product_name' style='width:100%' placeholder="New Product Name"
                                pattern="[\w\d\s\W\D\S]{1,50}" title="Maximum 50 character limit, no punctuation"></td>
-                    <td><input name='stockroom_new_stock_level' pattern="[0-9]{1,5}" style='width:100%'
+                    <td><input name='stockroom_new_stock_level' style='width:100%'
                                placeholder="Initial Stock Level" title="Range from 0 to 99,999"/>
                     </td>
                     <td><input name='stockroom_new_stock_alert' style='width:100%' placeholder="Low Stock Alert"

@@ -25,8 +25,8 @@ $db_found = mysql_select_db($database, $db_handle);
 date_default_timezone_set('Europe/London');
 
 if ($db_found) {
-
-    $SQL = "SELECT * from order_details INNER JOIN product_table ON order_details.product_id=product_table.product_id WHERE order_number=$order_number;";
+    //INNER JOIN product_table ON order_details.product_id=product_table.product_id
+    $SQL = "SELECT * from order_details WHERE order_number=$order_number;";
 
     $result = mysql_query($SQL);
 

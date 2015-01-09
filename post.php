@@ -87,10 +87,10 @@ if (isset($_POST['vending_new_machine_submit'])) {
 }
 
 if (isset($_POST['vending_remove_machine_submit'])) {
-        $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
-        $query = "DELETE FROM machine_table WHERE machine_id='$machine_to_delete';";
-        mysql_query($query) or die ("Unable to delete Vending Machine");
-        header("location:vending.php");
+    $machine_to_delete = $_POST['vending_remove_machine_dropdown'];
+    $query = "DELETE FROM machine_table WHERE machine_id='$machine_to_delete';";
+    mysql_query($query) or die ("Unable to delete Vending Machine");
+    header("location:vending.php");
 }
 
 if (isset($_POST['vending_alter_machine_submit'])) {

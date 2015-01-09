@@ -61,12 +61,8 @@
 <title>Orders | Vending Machine Management System</title>
 
 <body>
-
-
 <?php
-
 include "./includes/menu.php";
-
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
 } else {
@@ -81,7 +77,7 @@ include "./includes/credentials.php";
     <div align="center"><h1>Order Management</h1></div>
 
     <div style="float: left; width: 66%" align="center">
-
+        <h3>Order History</h3>
         <table class='tablesorter' id="order">
             <input type="text" placeholder="Order Number" id="order_history_order_number"/>
             <button id='order_window_button' type="button" onclick="open_order_window()">View Past Order</button>
@@ -121,7 +117,9 @@ include "./includes/credentials.php";
             Low Stock
         </button>
 
-        <br><br><form name=order_creation' method='post' action='post.php'>
+        <br><br>
+
+        <form name=order_creation' method='post' action='post.php'>
 
         </form>
 
@@ -141,7 +139,7 @@ include "./includes/credentials.php";
     </div>
 
 
-<div class="clear"></div>
+    <div class="clear"></div>
 </div>
 <?php
 include('./includes/footer.php');

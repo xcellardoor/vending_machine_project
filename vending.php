@@ -172,7 +172,7 @@ date_default_timezone_set('Europe/London');
 
         </div>
 
-        <div align=center id='table_section'>
+        <div id='table_section'>
             <?php include('./includes/credentials.php');
             $db_handle = mysql_connect($server, $user_name, $password);
             $db_found = mysql_select_db($database, $db_handle);
@@ -181,7 +181,7 @@ date_default_timezone_set('Europe/London');
         </div>
     </div>
 
-    <div style="float: left; width: 33%" id="vending_amendments_section">
+    <div id="vending_amendments_section">
 
         <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
             <?php
@@ -235,6 +235,38 @@ date_default_timezone_set('Europe/London');
             ?>
 
             <div align=center>
+                <h3>Add Product</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Machine ID</th>
+                        <th>Quantity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <?php echo dropdown_menu('add_product_name', $product_table_values, $product_table_options, 1); ?></td>
+                        <td>
+                            <?php echo dropdown_menu('add_vending_machine', $active_machine_array, $active_machine_array, 1); ?></td>
+                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity" pattern="[\d]{1,3}"
+                                   title="Number, maximum 999"/></td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr>
+                        <th>Best-Before</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
+                                   value='2015-01-01'/></td>
+                        <td><input name="add_product_submit" type="submit" value="Add Product"/></td>
+                    </tr>
+                    </tbody>
+                </table>
 
                 <h3>Alter Product</h3>
                 <table>
@@ -248,44 +280,25 @@ date_default_timezone_set('Europe/London');
                     <!--Since the same list of 'existing products in machines' is needed, we can borrow the line used for deleting-->
                     <tbody>
                     <tr>
-                        <td> <?php echo dropdown_menu('alter_product_id', $product_array_values, $product_array_items, 0); ?>
+                        <td> <?php echo dropdown_menu('alter_product_id', $product_array_values, $product_array_items, 1); ?>
                         <td>
-                            <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 0); ?>
+                            <?php echo dropdown_menu('alter_machine_id', $machines_in_use_array, $machines_in_use_array, 1); ?>
 
                     </tbody>
-                        <thead><tr><th>Attribute to Alter</th><th>New Value</th></tr></thead>
-                    <tbody><tr><td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID (Move Product)', 'Quantity in Machine', 'Best Before'], 1); ?><td><input name="alter_product_new_value" style="width:100%"
-                                                          placeholder="New Value"/></td></tr>
-                        <tr><td colspan="2"><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <h3>Add Product</h3>
-
-                <table>
                     <thead>
                     <tr>
-                        <th>Product Name</th>
-                        <th>Machine ID</th>
-                        <th>Quantity</th>
+                        <th>Attribute to Alter</th>
+                        <th>New Value</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>
-                            <?php echo dropdown_menu('add_product_name', $product_table_values, $product_table_options, 0); ?></td>
-                        <td>
-                            <?php echo dropdown_menu('add_vending_machine', $active_machine_array, $active_machine_array, 0); ?></td>
-                        <td><input name="new_quantity" style="width:100%" placeholder="Quantity" pattern="[\d]{1,3}"
-                                   title="Number, maximum 999"/></td></tr></tbody>
-                    <thead>
-                    <tr><th>Best-Before</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
-                                   value='2015-01-01'/></td>
-                        <td><input name="add_product_submit" type="submit" value="Add Product"/></td>
+                        <td> <?php echo dropdown_menu('alter_product_choice', ['machine_id', 'quantity_in_machine', 'best_before'], ['Machine ID (Move Product)', 'Quantity in Machine', 'Best Before'], 1); ?>
+                        <td><input name="alter_product_new_value" style="width:100%"
+                                   placeholder="New Value"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -293,11 +306,11 @@ date_default_timezone_set('Europe/London');
                 <h3>Remove Product</h3>
                 <table>
                     <tr>
-                        <th>Product Name </th>
+                        <th>Product Name</th>
                         <th>Vending Machine</th>
                     </tr>
                     <tr>
-                        <td><?php echo dropdown_menu('remove_product_name', $product_array_values, $product_array_items, 0); ?></td>
+                        <td><?php echo dropdown_menu('remove_product_name', $product_array_values, $product_array_items, 1); ?></td>
                         <td><?php echo dropdown_menu('remove_vending_machine', $machines_in_use_array, $machines_in_use_array, 1); ?></td>
                         <td><input name="remove_product_submit" type="submit" value="Remove Product"/></td>
                     </tr>
@@ -309,8 +322,8 @@ date_default_timezone_set('Europe/London');
                 <table>
                     <thead>
                     <tr>
-                        <th>New Machine ID </th>
-                        <th>Building </th>
+                        <th>New Machine ID</th>
+                        <th>Building</th>
                         <th>Floor (Optional)</th>
                     <tr>
                     </thead>
@@ -355,7 +368,8 @@ date_default_timezone_set('Europe/London');
                         <td>Confirm?<input type="checkbox" id="remove_vending_checkbox"
                                            onclick="toggle_button('vending_remove_machine_submit')"
                                            id="remove_vending_machine_checkbox" value="true"></td>
-                        <td><input id="vending_remove_machine_submit" name="vending_remove_machine_submit" type="submit" value="Remove Machine"/></td>
+                        <td><input id="vending_remove_machine_submit" name="vending_remove_machine_submit" type="submit"
+                                   value="Remove Machine"/></td>
                         </button>
                     </tr>
                 </table>

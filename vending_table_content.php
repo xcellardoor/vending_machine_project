@@ -37,27 +37,17 @@ if ($db_found) {
             $machine_id = $_REQUEST['vending_filter_machine_id'];
             $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE machine_table.machine_id=$machine_id order by $order_instruction;";
         }
-    }
-
-    elseif ($vending_filter_dropdown == "out_of_date") {
+    } elseif ($vending_filter_dropdown == "out_of_date") {
         $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE vending_table.best_before<=CURDATE() order by $order_instruction;";
-    }
-
-    elseif ($vending_filter_dropdown == "in_date") {
+    } elseif ($vending_filter_dropdown == "in_date") {
         $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE vending_table.best_before>=CURDATE() order by $order_instruction;";
-    }
-
-    elseif ($vending_filter_dropdown == "product_name") {
+    } elseif ($vending_filter_dropdown == "product_name") {
         $product_name = $_REQUEST['vending_filter_product_name'];
         $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE product_table.product_name LIKE '$product_name%' order by $order_instruction;";
-    }
-
-    elseif ($vending_filter_dropdown == "building") {
+    } elseif ($vending_filter_dropdown == "building") {
         $building = $_REQUEST['vending_filter_building'];
         $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE machine_table.building LIKE '$building%' order by $order_instruction;";
-    }
-
-    elseif ($vending_filter_dropdown == "quantity") {
+    } elseif ($vending_filter_dropdown == "quantity") {
         $quantity = $_REQUEST['vending_filter_quantity_value'];
         $direction = $_REQUEST['vending_filter_quantity_direction'];
 
