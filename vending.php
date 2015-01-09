@@ -153,7 +153,7 @@ date_default_timezone_set('Europe/London');
 ?>
 <div id="main-body">
 
-    <div align=center><h1>Vending Machine Management</h1></div>
+    <div class='page_function_title'><h1>Vending Machine Management</h1></div>
 
     <div align=center id="left_column" style="float: left; width: 66%">
         <select id='vending_filter_dropdown' onchange="filter_selections(this.value)">
@@ -169,7 +169,6 @@ date_default_timezone_set('Europe/London');
         <br>
 
         <div id="filter_options">
-
         </div>
 
         <div id='table_section'>

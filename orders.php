@@ -35,7 +35,7 @@
             });
 
             request.done(function (msg) {
-                $("#order_compose_content").html(msg);
+                $("#order_compose_section").html(msg);
             });
 
             request.fail(function (jqXHR, textStatus) {
@@ -50,10 +50,11 @@
             var test = document.getElementById('download_area');
             var new_button = document.createElement("a");
             new_button.download = $('#download_filename').val() + ".html";
-            new_button.href = "data:text/html," + document.getElementById("order_compose_content").innerHTML;
-            new_button.innerHTML = "Ready - Click Here to Download";
+            new_button.href = "data:text/html," + document.getElementById("order_compose_section").innerHTML;
+            new_button.innerHTML = "<br>Ready - Click Here to Download";
 
             test.appendChild(new_button);
+            $("#download_button").prop('disabled', true);
         }
     </script>
 
@@ -74,7 +75,7 @@ include "./includes/credentials.php";
 ?>
 
 <div id="main-body">
-    <div align="center"><h1>Order Management</h1></div>
+    <div class="page_function_title"><h1>Order Management</h1></div>
 
     <div style="float: left; width: 66%" align="center">
         <h3>Order History</h3>
@@ -107,6 +108,14 @@ include "./includes/credentials.php";
             </tbody>
         </table>
 
+
+
+        <h3>Create an Order</h3>
+            |BASKET| containing queue
+
+            dropdownITEM, entry quantity, APPEND BUTTON
+                    (refresh)
+
     </div>
 
     <div style='float: left; width: 33%' align=center id="past_orders">
@@ -117,13 +126,13 @@ include "./includes/credentials.php";
             Low Stock
         </button>
 
-        <br><br>
+        <br>
 
         <form name=order_creation' method='post' action='post.php'>
 
         </form>
 
-        <div id="order_compose_content"></div>
+        <div id="order_compose_section"></div>
 
         <div id="download_area" align="center">
             <input type="text" id="download_filename" placeholder="Enter Filename...">

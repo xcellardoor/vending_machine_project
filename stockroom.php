@@ -25,7 +25,7 @@ if ($_SESSION['authenticated'] != "true") {
         );
 
         $(function () {
-            var $sidebar = $("#stockroom_amendment_section"),
+            var $sidebar = $("#stockroom_amendments_section"),
                 $window = $(window),
                 offset = $sidebar.offset(),
                 topPadding = 15;
@@ -107,10 +107,8 @@ include "./includes/shared_php_functions.php";
 
 ?>
 
-<div id="database_check"></div>
-
 <div id="main-body">
-    <div align="center"><h1>Stockroom Management</h1></div>
+    <div class="page_function_title"><h1>Stockroom Management</h1></div>
     <div style="float: left; width: 66%" align="center">
 
         <select id='stockroom_filter_dropdown' onchange="filter_selections(this.value)">
@@ -171,7 +169,7 @@ include "./includes/shared_php_functions.php";
             echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
             ?>
 
-            How to validate me?!<input name="new_product_value" size="15" placeholder="New Value"
+            <input name="new_product_value" size="15" placeholder="New Value"
                                        title="Enter new value" pattern="([0-9]{1,5})|"/>
             <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
 
@@ -181,8 +179,8 @@ include "./includes/shared_php_functions.php";
             <h3>Add Product</h3>
             <table>
                 <tr>
-                    <th>Product Name
-                    <th>Initial Stock
+                    <th>Product Name</th>
+                    <th>Initial Stock</th>
                     <th>Low Stock Alert</th>
                 </tr>
                 <tr>

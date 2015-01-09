@@ -69,7 +69,6 @@ if (isset($_POST['stockroom_new_stock_submit'])) {
 
 
     $query = "INSERT INTO product_table (product_name, stock_purchase_price, stock_sale_price, remaining_stock, low_stock_alert) VALUES ('$product_name', '$purchase_price', '$sale_price', '$stock_level', '$stock_alert');";
-    print $query;
 
     mysql_query($query) or die ("Unable to Add Product to Stockroom");
     header("location:stockroom.php");

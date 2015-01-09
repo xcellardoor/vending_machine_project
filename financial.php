@@ -120,7 +120,7 @@ $db_handle = mysql_connect($server, $user_name, $password);
 $db_found = mysql_select_db($database, $db_handle);
 ?>
 <div id="main-body">
-    <div align="center"><h1>Financial</h1></div>
+    <div class="page_function_title"><h1>Financial</h1></div>
 
     <div style="float: left; width: 66%">
         <div align="center" id="report_section">

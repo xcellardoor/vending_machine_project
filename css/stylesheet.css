@@ -30,15 +30,25 @@ body {
     float: left;
     width: 33%;
     margin:5px;
-    aligh:center;
     text-align:center;
+}
+
+.page_function_title{
+    text-align:center;
+    font-style: italic;
+    color: #0075B2;
 }
 
 #stockroom_amendments_section{
     float:left;
     width: 33%;
     margin:5px;
-    align:center;
+    text-align:center;
+}
+
+#order_compose_section{
+    clear: both;
+    margin:5px;
     text-align:center;
 }
 

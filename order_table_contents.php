@@ -27,10 +27,10 @@ if ($db_found) {
     $result = mysql_query($SQL);
 
     $reply = "<table id='table' class='tablesorter'>";
-    $reply .= "<thead><tr><th>Product Name</th></tr></thead><tbody>";
+    $reply .= "<thead><tr><th>Product Name</th></tr></thead><tbody><td BGCOLOR='#EE0000'>LOW STOCK</td>";
 
     while ($db_field = mysql_fetch_assoc($result)) {
-        $reply .= "<tr><td>" . $db_field['product_name'] . "<td BGCOLOR=\"#EE0000\">LOW STOCK</td></tr>";
+        $reply .= "<tr><td>" . $db_field['product_name']."</tr>";
 
     }
 
