@@ -39,7 +39,9 @@ if (isset($_POST['add_product_submit'])) {
 
     }
     else{
-        echo "Cannot update record: " . $connection->error;
+        die
+        ("Cannot update record: " . $connection->error);
+        #header("vending.php?alert='Cannot update record! " . $connection->connect_error);
     }
 
     $SQL = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
@@ -107,12 +109,6 @@ if (isset($_POST['stockroom_new_stock_submit'])) {
     $purchase_price = $_POST['stockroom_new_purchase_price'];
     $sale_price = $_POST['stockroom_new_sale_price'];
 
-    //Find the next available product_id value
-    $highest_product_id_query = mysql_query("SELECT MAX( product_id ) AS max FROM `product_table`;");
-    $highest_product_id_fetch = mysql_fetch_array($highest_product_id_query);
-    $highest_product_id = $highest_product_id_fetch['max'];
-
-
     $SQL = "INSERT INTO product_table (product_name, stock_purchase_price, stock_sale_price, remaining_stock, low_stock_alert) VALUES ('$product_name', '$purchase_price', '$sale_price', '$stock_level', '$stock_alert');";
 
     if ($connection->query($SQL) == TRUE){
@@ -174,8 +170,6 @@ if (isset($_POST['vending_alter_machine_submit'])) {
     $connection->close();
 
 } else {
-    die("No value set");
     $connection->close();
+    die("No value set");
 }
-
-?>

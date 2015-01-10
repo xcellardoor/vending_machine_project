@@ -21,5 +21,3 @@ function dropdown_menu($name, array $values, array $options, $selected = null)
 
     return $dropdown;
 }
-
-?>

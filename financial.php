@@ -147,7 +147,7 @@ include("./includes/menu.php");
             </table>
         </div>
         <div id='filter_options' align="center"></div>
-        <br><br><br>
+        <hr class="adjustment_hr">
 
         <div id="download_area" align="center">
             <h4>Download Table Content</h4>

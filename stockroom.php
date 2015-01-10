@@ -92,7 +92,7 @@ if ($_SESSION['authenticated'] != "true") {
         }
 
         function open_order_window() {
-            newwindow = window.open('./orders.php', 'name', 'height=600,width=800');
+            var newwindow = window.open('./orders.php', 'name', 'height=600,width=800');
             if (window.focus) {
                 newwindow.focus()
             }
@@ -116,9 +116,6 @@ include "./includes/shared_php_functions.php";
             <option value="in_stock">In Stock</option>
             <option value="out_of_stock">Out Of Stock</option>
             <option value="remaining_stock">Remaining Stock</option>
-            <!--<option value="sale_price">Sale Price</option>
-            <option value="purchase_price">Purchase Price</option>
-            <option value="low_stock">Low Stock Alert</option>-->
         </select>
         <button type="button" onclick="filter_table()">Filter!</button>
         <br>
@@ -132,7 +129,7 @@ include "./includes/shared_php_functions.php";
             include('./stockroom_table_content.php');
             ?>
         </div>
-        <br>
+
 
     </div>
     <div id="stockroom_amendments_section">
@@ -140,7 +137,7 @@ include "./includes/shared_php_functions.php";
         <form name='stock_update' method='post' action='post.php'>
 
             <?php
-            $SQL = "SELECT * FROM product_table";
+            $SQL = "SELECT * FROM product_table ORDER BY product_name ASC;";
             $result = $connection->query($SQL);
 
             $product_array = array();
@@ -160,21 +157,31 @@ include "./includes/shared_php_functions.php";
             }
             ?>
             <h3>Alter Existing Product</h3>
-
-            <?php
-            echo dropdown_menu('product_list', $product_array, $product_array, 1);
-            echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Product Name', 'Stock Purchase Price', 'Stock Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
-            ?>
-
-            <input name="new_product_value" size="15" placeholder="New Value"
-                                       title="Enter new value" pattern="([0-9]{1,5})|"/>
-            <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
-
+            <table class="adjustment_controls">
+            <thead><th>Product Name</th><th>Attribute to Change</th></thead>
+                <tbody>
+                <tr>
+                <td><?php
+            echo dropdown_menu('product_list', $product_array, $product_array, 1);?></td>
+            <td><?php echo dropdown_menu('column_list', ['product_name', 'stock_purchase_price', 'stock_sale_price', 'remaining_stock', 'low_stock_alert'], ['Change Name', 'Change Wholesale Purchase Price', 'Sale Price', 'Remaining Stock', 'Low Stock Alert'], 1);
+            ?></td>
+                </tr>
+                </tbody>
+                <thead><th>New Value</th></thead>
+                <tbody>
+                <td>
+                    <input name="new_product_value" size="15" placeholder="New Value" title="Enter new value" pattern="[\w\d\s\W\D\S]{1,50}"/>
+                </td>
+                <td>
+                    <input name="stockroom_alter_product_submit" type="submit" value="Update Database"/>
+                </td>
+                </tbody>
+            </table>
             <!--ADDITION-->
-            <br><br>
+            <hr class="adjustment_hr">
 
-            <h3>Add Product</h3>
-            <table>
+            <h3>Add New Product to Stockroom</h3>
+            <table class="adjustment_controls">
                 <tr>
                     <th>Product Name</th>
                     <th>Initial Stock</th>
@@ -190,34 +197,32 @@ include "./includes/shared_php_functions.php";
                                pattern="[0-9]{1,5}" title="Range from 0 to 99,999"></td>
                 </tr>
                 <tr>
-                    <th>Stock Purchase Price (Pence)</th>
+                    <th>Wholesale Purchase Price (Pence)</th>
                     <th>Stock Sale Price (Pence)</th>
                 </tr>
                 <tr>
-                    <td><input name='stockroom_new_purchase_price' style='width:100%' placeholder="Purchase Price"
+                    <td><input name='stockroom_new_purchase_price' style='width:100%' placeholder="Wholesale Purchase Price"
                                pattern="[0-9]{1,3}" title="Value from 0 to 999"></td>
                     <td><input name='stockroom_new_sale_price' style='width:100%' placeholder="New Sale Price"
                                pattern="[0-9]{1,3}" title="Value from 0 to 999"></td>
                     <td><input name="stockroom_new_stock_submit" type="submit" value="Add Product"/></td>
                 </tr>
-
             </table>
 
             <?php
             $product_names = array();
 
-            $SQL = 'select * from product_table;';
+            $SQL = 'SELECT * FROM product_table ORDER BY product_name ASC;';
             $result = $connection->query($SQL);
 
             while ($db_field = $result->fetch_assoc()) {
                 array_push($product_names, $db_field['product_name']);
             }
             ?>
+            <hr class="adjustment_hr">
 
-            <br>
-
-            <h3>Remove Product</h3>
-            <table>
+            <h3>Remove Product from Stockroom</h3>
+            <table class="adjustment_controls">
                 <tr>
                     <th>Product Name</th>
                 </tr>

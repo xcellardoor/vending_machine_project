@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cellardoor
- * Date: 18/12/14
- * Time: 16:34
- */
-
 echo '<div align=center>';
 
 //This IF ELSE allows this page to be included and a default value of machine_id to be used for sorting if no other is passed

@@ -14,15 +14,15 @@ if (isset($_REQUEST['vending_filter_dropdown'])) {
 
 include('./includes/credentials.php');
 
-$db_handle = mysql_connect($server, $user_name, $password);
-$db_found = mysql_select_db($database, $db_handle);
+//$db_handle = mysql_connect($server, $user_name, $password);
+//$db_found = mysql_select_db($database, $db_handle);
 
 $connection = new mysqli($server, $user_name, $password, $database);
 if ($connection->connect_error){
-    die("Connection failed: " . $connection->connect_error);
+    echo("Connection failed - Database Connectivity Error: " . $connection->connect_error);
 }
-
-date_default_timezone_set('Europe/London');
+else {
+    date_default_timezone_set('Europe/London');
 
     $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id order by $order_instruction;";
 
@@ -56,23 +56,31 @@ date_default_timezone_set('Europe/London');
         $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id WHERE vending_table.quantity_in_machine$direction$quantity order by $order_instruction;";
     }
 
-    $result=$connection->query($SQL);
+    $result = $connection->query($SQL);
 
     $reply = "<table id='table' class='tablesorter'>";
     $reply .= "<thead><tr><th>Machine</th><th>Product Name</th><th>Quantity</th><th>Building</th><th>Floor</th><th>Best Before</th></tr></thead><tbody>";
 
     while ($db_field = $result->fetch_assoc()) {
-        $reply .= "<tr><td>" . $db_field['machine_id'] . "</td><td>" . $db_field['product_name'] . "</td><td>" . $db_field['quantity_in_machine'] . "</td><td>" . $db_field['building'] . "</td><td>" . $db_field['floor'];
+        $reply .= "<tr><td>" . $db_field['machine_id'] . "</td><td>" . $db_field['product_name'] . "</td>";
+
+        if ($db_field['quantity_in_machine'] <= 5) {
+            $reply .= "<td BGCOLOR=\"#FF6666\">" . $db_field['quantity_in_machine'] . "</td>";
+        } else {
+            $reply .= "<td>" . $db_field['quantity_in_machine'] . "</td>";
+        }
+
+        $reply .= "<td>" . $db_field['building'] . "</td><td>" . $db_field['floor'];
 
         if (strtotime($db_field['best_before']) < strtotime('now')) {
-            $reply .= "<td BGCOLOR=\"#EE0000\">OUT OF DATE!</td></tr>";
+            $reply .= "<td BGCOLOR=\"#FF6666 \">OUT OF DATE!</td></tr>";
         } else {
-            $reply .= "<td BGCOLOR=\"#00ff00\">IN DATE</td></tr>";
+            $reply .= "<td BGCOLOR=\"#70DB70\">IN DATE</td></tr>";
         }
     }
 
     $reply .= "</tbody></table>";
-
+}
 
 if (strlen($reply) > 15) {
     echo $reply;

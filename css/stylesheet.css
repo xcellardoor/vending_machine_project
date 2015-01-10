@@ -26,6 +26,10 @@ body {
     text-align: center;
 }
 
+#order_creation_area{
+    border: solid 1px black;
+}
+
 #vending_amendments_section{
     float: left;
     width: 33%;
@@ -44,6 +48,26 @@ body {
     width: 33%;
     margin:5px;
     text-align:center;
+}
+
+.adjustment_controls {
+    border-bottom: 2px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-collapse: collapse;
+    background: #E8E8EE;
+
+}
+.adjustment_hr {
+    height:1px;
+    background:#000000;
+    margin: 1em;
+}
+
+.adjustment_controls th, .adjustment_controls thead, .adjustment_controls td{
+    border:none;
+    outline:none;
 }
 
 #order_compose_section{
@@ -75,7 +99,7 @@ table, th, td {
 }
 
 p, h2, h3, body {
-    font-family: Trebuchet MS
+    font-family: Trebuchet MS, serif;
 }
 
 h1, h2, h3, h4, h5 {
@@ -90,15 +114,15 @@ h1 {
 
 p {
     font: 15px/1.7 Trebuchet MS;
-    padding-top: 0px;
+    padding-top: 0;
     padding-bottom: 20px;
-    margin: 0px;
+    margin: 0;
 }
 
 header {
     text-align: left;
     clear: both;
-    padding: 0px 30px;
+    padding: 0 30px;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -137,12 +161,12 @@ footer {
 footer p {
     font-size: 12px;
     color: #fff;
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 nav ul {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     display: block;
     float: right;
 }
@@ -151,7 +175,7 @@ nav ul li {
     font-size: 15px;
     list-style: none;
     float: left;
-    margin: 10px 0px 0px 10px;
+    margin: 10px 0 0 10px;
 
 }
 

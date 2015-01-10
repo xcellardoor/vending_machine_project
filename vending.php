@@ -16,7 +16,6 @@ if ($_SESSION['authenticated'] != "true") {
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
     <script>
-
         $(document).ready(function () {
                 $("table").tablesorter();
                 $('#vending_remove_machine_submit').prop('disabled', true);
@@ -41,16 +40,6 @@ if ($_SESSION['authenticated'] != "true") {
             });
 
         });
-
-        function validateForm(array) {
-            for (var i in array) {
-                if (i == null || i == "") {
-                    alert(i + " must be filled out");
-                    return false;
-                }
-            }
-
-        }
 
         function sort_table() {
             var request = $.ajax({
@@ -109,7 +98,7 @@ if ($_SESSION['authenticated'] != "true") {
         }
 
         function remove_machine() {
-            if (window.confirm("Are you SURE you wish to delete the vending machine, and loose record of both it and all the products it currently contains?")) {
+            if (window.confirm("Are you SURE you wish to delete the vending machine, and lose record of both it and all the products it currently contains?")) {
                 var request = $.ajax({
                     url: "post.php?vending_remove_machine_dropdown=" + $('#vending_remove_machine_dropdown').val() + "&vending_remove_machine_submit='1'",
                     type: 'POST',
@@ -184,50 +173,57 @@ date_default_timezone_set('Europe/London');
 
         <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
             <?php
-            $active_machine_array = array();
-            $product_array_items = array();
-            $machines_in_use_array = array();
-            $product_array_values = array();
-            $product_table_options = array();
-            $product_table_values = array();
-            $vending_table_columns = array();
 
-            #$SQL = "SELECT * FROM vending_table";
-            $SQL = 'SELECT * FROM vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id;';
-            $result = $connection->query($SQL);
-
-            while ($db_field = $result->fetch_assoc()) {
-                array_push($machines_in_use_array, $db_field['machine_id']);
-                array_push($product_array_items, $db_field['product_name']);
-                array_push($product_array_values, $db_field['product_id']);
+            if($connection->connect_error){
+                echo("Connection failed - Database Connectivity Error: " . $connection->connect_error);
             }
+            else {
 
-            $SQL = "SELECT machine_id FROM machine_table";
-            $result = $connection->query($SQL);
-            while ($db_field = $result->fetch_assoc()) {
-                array_push($active_machine_array, $db_field['machine_id']);
-            }
+                $active_machine_array = array();
+                $product_array_items = array();
+                $machines_in_use_array = array();
+                $product_array_values = array();
+                $product_table_options = array();
+                $product_table_values = array();
+                $vending_table_columns = array();
 
-            $SQL = "SELECT * from product_table;";
-            $result = $connection->query($SQL);
-            while ($db_field = $result->fetch_assoc()) {
-                array_push($product_table_values, $db_field['product_id']);
-                array_push($product_table_options, $db_field['product_name']);
-            }
+                #$SQL = "SELECT * FROM vending_table";
+                $SQL = 'SELECT * FROM vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id ORDER BY product_name ASC;';
+                $result = $connection->query($SQL);
 
-            $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="vending_table";';
-            $result = $connection->query($SQL);
-            while ($db_field = $result->fetch_assoc()) {
-                array_push($vending_table_columns, $db_field['COLUMN_NAME']);
+                while ($db_field = $result->fetch_assoc()) {
+                    array_push($machines_in_use_array, $db_field['machine_id']);
+                    array_push($product_array_items, $db_field['product_name']);
+                    array_push($product_array_values, $db_field['product_id']);
+                }
+
+                $SQL = "SELECT machine_id FROM machine_table";
+                $result = $connection->query($SQL);
+                while ($db_field = $result->fetch_assoc()) {
+                    array_push($active_machine_array, $db_field['machine_id']);
+                }
+
+                $SQL = "SELECT * from product_table order by product_name ASC;";
+                $result = $connection->query($SQL);
+                while ($db_field = $result->fetch_assoc()) {
+                    array_push($product_table_values, $db_field['product_id']);
+                    array_push($product_table_options, $db_field['product_name']);
+                }
+
+                $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="vending_table";';
+                $result = $connection->query($SQL);
+                while ($db_field = $result->fetch_assoc()) {
+                    array_push($vending_table_columns, $db_field['COLUMN_NAME']);
+                }
+                $active_machine_array = array_unique($active_machine_array);
+                $machines_in_use_array = array_unique($machines_in_use_array);
+                sort($machines_in_use_array);
             }
-            $active_machine_array = array_unique($active_machine_array);
-            $machines_in_use_array = array_unique($machines_in_use_array);
-            sort($machines_in_use_array);
             ?>
 
             <div align=center>
                 <h3>Add Product To Machine</h3>
-                <table>
+                <table class="adjustment_controls">
                     <thead>
                     <tr>
                         <th>Product Name</th>
@@ -259,7 +255,7 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
-                <h3>Alter Product in Machine</h3>
+                <?php /*<h3>Alter Product in Machine</h3>
                 <table>
                     <thead>
                     <tr>
@@ -292,10 +288,12 @@ date_default_timezone_set('Europe/London');
                         <td colspan="2"><input name="alter_product_submit" type="submit" value="Alter Product"/></td>
                     </tr>
                     </tbody>
-                </table>
+                </table>*/?>
+
+                <hr class="adjustment_hr">
 
                 <h3>Remove Product from Machine</h3>
-                <table>
+                <table class="adjustment_controls">
                     <tr>
                         <th>Product Name</th>
                         <th>Vending Machine</th>
@@ -308,17 +306,19 @@ date_default_timezone_set('Europe/London');
 
                 </table>
 
+                <hr class="adjustment_hr">
 
                 <h3>Add Machine to Database</h3>
-                <table>
+                <table class="adjustment_controls">
                     <thead>
                     <tr>
                         <th>New Machine ID</th>
                         <th>Building</th>
                         <th>Floor (Optional)</th>
-                    <tr>
+                    </tr>
                     </thead>
                     <tbody>
+                    <tr>
                     <td><input id='vending_new_machine_id' name="vending_new_machine_id" style="width:100%"
                                placeholder="Machine ID"/>
                     <td><input name="vending_new_machine_building" style="width:100%" placeholder="Building"/>
@@ -328,8 +328,10 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
+                <hr class="adjustment_hr">
+
                 <h3>Alter Machine in Database</h3>
-                <table>
+                <table class="adjustment_controls">
                     <thead>
                     <tr>
                         <th>Machine ID</th>
@@ -345,8 +347,10 @@ date_default_timezone_set('Europe/London');
                     </tbody>
                 </table>
 
+                <hr class="adjustment_hr">
+
                 <h3>Remove Machine from Database</h3>
-                <table>
+                <table class="adjustment_controls">
                     <tr>
                         <th>Vending Machine</th>
                     </tr>
@@ -354,7 +358,7 @@ date_default_timezone_set('Europe/London');
                         <td>
 
                             <?php
-                            echo dropdown_menu('vending_remove_machine_dropdown', $machines_in_use_array, $machines_in_use_array, 0); ?>
+                            echo dropdown_menu('vending_remove_machine_dropdown', $active_machine_array, $active_machine_array, 1); ?>
                         </td>
                         <td>Confirm?<input type="checkbox" id="remove_vending_checkbox"
                                            onclick="toggle_button('vending_remove_machine_submit')"

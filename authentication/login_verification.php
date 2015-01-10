@@ -11,7 +11,7 @@ if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
 
     $connection = new mysqli($server, $user_name, $password, $database);
     if ($connection->connect_error) {
-        die ('Connection failed: ' . $connection->connect_error);
+        die ('Connection failed - Database Connectivity Error: ' . $connection->connect_error);
     }
 
 
@@ -54,4 +54,3 @@ if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
         $connection->close();
 
 }
-?>

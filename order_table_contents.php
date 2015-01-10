@@ -33,7 +33,7 @@ date_default_timezone_set('Europe/London');
     $result = $connection->query($SQL);
 
     $reply = "<table id='table' class='tablesorter'>";
-    $reply .= "<thead><tr><th>Product Name</th></tr></thead><tbody><td BGCOLOR='#EE0000'>LOW STOCK</td>";
+    $reply .= "<thead><tr><th>Product Name</th></tr></thead><tbody><tr><td BGCOLOR='#FF6666'>LOW STOCK</td></tr>";
 
     while ($db_field = $result->fetch_assoc()) {
         $reply .= "<tr><td>" . $db_field['product_name']."</tr>";

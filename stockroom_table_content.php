@@ -34,7 +34,7 @@ date_default_timezone_set('Europe/London');
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
-    $SQL = "SELECT * FROM product_table;";
+    $SQL = "SELECT * FROM product_table ORDER BY product_name ASC;";
 
     //Override rules to get the table to show what we actually want.
 
@@ -49,7 +49,7 @@ if ($connection->connect_error) {
             $direction = ">=";
         }
 
-        $SQL = "SELECT * from product_table WHERE remaining_stock$direction$stock_value;";
+        $SQL = "SELECT * from product_table WHERE remaining_stock$direction$stock_value ORDER BY product_name ASC;";
 
     }
 
@@ -59,27 +59,27 @@ if ($connection->connect_error) {
     }
 
     if ($stockroom_filter_dropdown == "in_stock") {
-        $SQL = "SELECT * from product_table WHERE remaining_stock>low_stock_alert;";
+        $SQL = "SELECT * from product_table WHERE remaining_stock>low_stock_alert ORDER BY product_name ASC;";
     }
     if ($stockroom_filter_dropdown == "out_of_stock") {
-        $SQL = "SELECT * from product_table WHERE remaining_stock<=low_stock_alert;";
+        $SQL = "SELECT * from product_table WHERE remaining_stock<=low_stock_alert ORDER BY product_name ASC;";
     }
     if ($stockroom_filter_dropdown == "low_stock") {
         $low_stock = $_REQUEST['stockroom_filter_low_stock'];
-        $SQL = "SELECT * from product_table WHERE low_stock LIKE '$low_stock%';";
+        $SQL = "SELECT * from product_table WHERE low_stock LIKE '$low_stock%' ORDER BY product_name ASC;";
     }
 
     $reply = "";
 
 $result = $connection->query($SQL);
-        $reply .= "<table class='tablesorter' id='stockroom_table'><thead><tr><th>Product Name<th>Remaining Stock<th>Purchase Price<th>Sale price<th>Low Stock Alert<th>Stock State</th></tr></thead><tbody>";
+        $reply .= "<table class='tablesorter' id='stockroom_table'><thead><tr><th>Product Name<th>Remaining Stock<th>W/S Purchase Price<th>Sale price<th>Low Stock Alert<th>Stock State</th></tr></thead><tbody>";
         while ($db_field = $result->fetch_assoc()) {
-            $reply .= "<tr><td>" . $db_field['product_name'] . "<td>" . $db_field['remaining_stock'] . "<td>" . $db_field['stock_purchase_price'] . "<td>" . $db_field['stock_sale_price'] . "<td>" . $db_field['low_stock_alert'];
+            $reply .= "<tr><td>" . $db_field['product_name'] . "<td>" . $db_field['remaining_stock'] . "<td>£" . money_format('%n',$db_field['stock_purchase_price'] /100) . "<td>£" . money_format('%n',$db_field['stock_sale_price'] /100) . "<td>" . $db_field['low_stock_alert'];
 
             if ($db_field['low_stock_alert'] > $db_field['remaining_stock']) {
-                $reply .= "<td BGCOLOR=\"#EE0000\">LOW!</td></tr>";
+                $reply .= "<td BGCOLOR=\"#FF6666\">LOW!</td></tr>";
             } else {
-                $reply .= "<td BGCOLOR=\"#26D82F\">OK</td></tr>";
+                $reply .= "<td BGCOLOR=\"#70DB70\">OK</td></tr>";
             }
         }
 

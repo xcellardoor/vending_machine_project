@@ -20,8 +20,8 @@
             }
         );
 
-        function open_order_window(id) {
-            newwindow = window.open('./order_history_window.php?order_number=' + $('#order_history_order_number').val(), 'name', 'height=600,width=800');
+        function open_order_window() {
+            var newwindow = window.open('./order_history_window.php?order_number=' + $('#order_history_order_number').val(), 'name', 'height=600,width=800');
             if (window.focus) {
                 newwindow.focus()
             }
@@ -77,6 +77,7 @@ include "./includes/credentials.php";
     <div style="float: left; width: 66%" align="center">
         <h3>Order History</h3>
         <table class='tablesorter' id="order">
+            <tbody>
             <input type="text" placeholder="Order Number" id="order_history_order_number"/>
             <button id='order_window_button' type="button" onclick="open_order_window()">View Past Order</button>
             <?php
@@ -100,20 +101,15 @@ include "./includes/credentials.php";
             </tbody>
         </table>
 
-
-
+        <div id="order_creation_area">
         <h3>Create an Order</h3>
-            |BASKET| containing queue
-
-            dropdownITEM, entry quantity, APPEND BUTTON
-                    (refresh)
+            <em>---Coming Soon---</em>
+        </div>
 
     </div>
 
     <div style='float: left; width: 33%' align=center id="past_orders">
-        <h3>Order Creation</h3>
-
-
+        <h3>Create Order from Low Stock</h3>
         <button id="create_order_from_low_stock_button" onclick="create_order_from_low_stock()">Auto-Create Order from
             Low Stock
         </button>
