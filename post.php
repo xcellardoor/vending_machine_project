@@ -44,7 +44,7 @@ if (isset($_POST['add_product_submit'])) {
         #header("vending.php?alert='Cannot update record! " . $connection->connect_error);
     }
 
-    $SQL = "UPDATE product_table set remaining_stock = remaining_stock-$new_quantity_in_machine;";
+    $SQL = "UPDATE product_table set remaining_stock = remaining_stock-'$new_quantity_in_machine' where product_id='$new_product_id';";
 
     if ($connection->query($SQL) == TRUE){
 
