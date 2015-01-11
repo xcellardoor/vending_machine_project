@@ -130,6 +130,7 @@ include "./includes/credentials.php";
         <h3>Suppliers</h3>
         <button onclick="show_suppliers()">Click to show suppliers</button>
         <div id="supplier_section"></div>
+        <p>Coming soon!</p>
     </div>
     <div class="clear"></div>
 </div>

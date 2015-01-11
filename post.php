@@ -59,7 +59,29 @@ if (isset($_POST['add_product_submit'])) {
 if (isset($_POST['remove_product_submit'])) {
     $product_id = $_POST['remove_product_name'];
     $machine_id = $_POST['remove_vending_machine'];
-    print $machine_id . " " . $product_id;
+    $quantity_left_in_machine=0; //So that we don't accidentally add or remove stock if commands below fail
+
+
+    $SQL = "SELECT * from vending_table WHERE vending_table.machine_id='$machine_id' and vending_table.product_id='$product_id';";
+
+    $result=$connection->query($SQL);
+    if ($result == TRUE){
+        while($db_field = $result->fetch_assoc())
+        $quantity_left_in_machine = $db_field['quantity_in_machine'];
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
+
+    $SQL = "UPDATE product_table set remaining_stock = remaining_stock+$quantity_left_in_machine;";
+
+    if ($connection->query($SQL) == TRUE){
+
+    }
+    else{
+        echo "Cannot update record: " . $connection->error;
+    }
+
     $SQL = "DELETE FROM vending_table WHERE product_id='$product_id' and machine_id='$machine_id';";
 
     if ($connection->query($SQL) == TRUE){
@@ -68,6 +90,7 @@ if (isset($_POST['remove_product_submit'])) {
     else{
         echo "Cannot update record: " . $connection->error;
     }
+
     header("location:vending.php");
     $connection->close();
 }

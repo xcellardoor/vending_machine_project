@@ -24,20 +24,19 @@ if ($_SESSION['authenticated'] != "true") {
         <p>Thank you for trialling the pre-release version of the Vending Management Solution from S162320 Management
             Systems Ltd. We ask that you please report any anomalous or undesired behaviour to the testing representative
             who provided you with this pre-release copy of our software. To thank you for your participation, you will
-            be given the opportunity to purchase the software for 50% the regular sales price when the final version is
+            be given the opportunity to purchase the software for <b><em>half price</em></b> when the final version is
             released for sale.</p>
 
-        <div align="center">
-            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./vending.php'"
+        <div class="landing_page_buttons">
+            <input TYPE="button" onClick="parent.location='./vending.php'"
                    value="Vending"/>
-            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./stockroom.php'"
+            <input TYPE="button" onClick="parent.location='./stockroom.php'"
                    value="Stockroom"/>
-            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./orders.php'"
+            <input TYPE="button" onClick="parent.location='./orders.php'"
                    value="Orders"/>
-            <input TYPE="button" class='index_shortcut_button' onClick="parent.location='./financial.php'"
+            <input TYPE="button" onClick="parent.location='./financial.php'"
                    value="Financial"/>
         </div>
-
     </section>
 
 </div>

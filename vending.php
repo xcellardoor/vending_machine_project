@@ -340,10 +340,12 @@ date_default_timezone_set('Europe/London');
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
                     <td><?php echo dropdown_menu('vending_alter_machine_id', $machines_in_use_array, $machines_in_use_array, 1); ?></td>
                     <td><?php echo dropdown_menu('vending_alter_machine_attribute', ['machine_id', 'building', 'floor'], ['Machine ID', 'Building', 'Floor'], 1) ?></td>
                     <td><input name="vending_alter_machine_value" style="width:100%" placeholder="New Value"/></td>
                     <td><input name="vending_alter_machine_submit" type="submit" value="Alter Machine"/></td>
+                    </tr>
                     </tbody>
                 </table>
 

@@ -55,6 +55,10 @@ if ($_SESSION['authenticated'] != "true") {
                     var result = "<input id='name_value' placeholder='Name?' type='text'>";
                     document.getElementById('filter_options').innerHTML = result;
                     break;
+                case "machine_id":
+                    var result = "<input id='machine_id' placeholder='Machine ID?' type='text'>";
+                    document.getElementById('filter_options').innerHTML = result;
+                    break;
                 default:
                     document.getElementById('filter_options').innerHTML = "";
             }
@@ -139,6 +143,7 @@ include("./includes/menu.php");
                             <option value="name">Name</option>
                             <option value="between_dates">Between Dates</option>
                             <option value="popularity">Product Popularity</option>
+                            <option value="machine_id">Machine ID (Coming soon in Software Assignment)</option>
                         </select>
 
                         <button type='button' onclick='filter_table()'>Filter!</button>

@@ -48,7 +48,8 @@ if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
             }
         } else {
 
-            echo "Error - could not connect to database! Please press 'Back' and contact your system administrator before trying again.";
+            echo "Error - could not connect to database or username invalid! Please try again!";
+            header("location:./login.php");
 
         }
         $connection->close();
