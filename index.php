@@ -18,6 +18,7 @@ if ($_SESSION['authenticated'] != "true") {
 }
 
 ?>
+<!--Main DIV-->
 <div id="main-body">
     <section id="home"><h1>Welcome to the Vending Machine Management System</h1>
 
