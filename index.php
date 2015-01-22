@@ -1,5 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id();
 } ?>
 <html>
 <head>
@@ -29,14 +30,10 @@ if ($_SESSION['authenticated'] != "true") {
             released for sale.</p>
 
         <div class="landing_page_buttons">
-            <input TYPE="button" onClick="parent.location='./vending.php'"
-                   value="Vending"/>
-            <input TYPE="button" onClick="parent.location='./stockroom.php'"
-                   value="Stockroom"/>
-            <input TYPE="button" onClick="parent.location='./orders.php'"
-                   value="Orders"/>
-            <input TYPE="button" onClick="parent.location='./financial.php'"
-                   value="Financial"/>
+            <input TYPE="button" onClick="parent.location='./vending.php'" value="Vending"/>
+            <input TYPE="button" onClick="parent.location='./stockroom.php'" value="Stockroom"/>
+            <input TYPE="button" onClick="parent.location='./orders.php'" value="Orders"/>
+            <input TYPE="button" onClick="parent.location='./financial.php'" value="Financial"/>
         </div>
     </section>
 

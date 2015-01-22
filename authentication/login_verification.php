@@ -1,6 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id();
 }
 
 if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
@@ -21,12 +22,17 @@ if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "true") {
         $user_user_input = $_POST['user_user_input'];
         $user_password_input = $_POST['user_password_input'];
 
-        $SQL = "SELECT * FROM authentication_table WHERE user_name='$user_user_input';";
+        $prepared_statement = $connection->prepare("SELECT * FROM authentication_table WHERE user_name = ?");
+        $prepared_statement->bind_param('s',$user_user_input);
+        //$user_name=$user_user_input;
+        $prepared_statement->execute();
+
+        //$SQL = "SELECT * FROM authentication_table WHERE user_name='$user_user_input';";
         //$result = mysql_query($SQL);
-        $result = $connection->query($SQL);
+        //$result = $connection->query($SQL);
+        $result = $prepared_statement->get_result();
 
         if ($result->num_rows > 0) {
-            //while ($db_field = mysql_fetch_assoc($result)) {
             while ($db_field = mysqli_fetch_assoc($result)){
                 $user_name = $db_field['user_name'];
                 $password_hash = $db_field['password_hash'];

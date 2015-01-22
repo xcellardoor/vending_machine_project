@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cellardoor
- * Date: 29/12/14
- * Time: 19:49
- */
-
 if (isset($_REQUEST["financial_sort_by_dropdown"])) {
 
     $sort_by_instruction = $_REQUEST["financial_sort_by_dropdown"];

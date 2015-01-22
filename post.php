@@ -1,9 +1,7 @@
 <?php
-
+session_start();
+$_SESSION['error']="";
 include('./includes/credentials.php');
-
-//$db_handle = mysql_connect($server, $user_name, $password);
-//$db_found = mysql_select_db($database, $db_handle);
 
 $connection = new mysqli($server, $user_name, $password, $database);
 if ($connection->connect_error){
@@ -11,19 +9,36 @@ if ($connection->connect_error){
 }
 
 if (isset($_POST['stockroom_alter_product_submit'])) {
+    #Variables
     $new_value = $_POST['new_product_value'];
     $product_name = $_POST['product_list'];
     $column_array = $_POST['column_list'];
-    $SQL = "UPDATE product_table SET $column_array ='$new_value' WHERE product_name='$product_name';";
-
-    if ($connection->query($SQL) == TRUE){
-
+    $prepared_statement = $connection->prepare("UPDATE product_table SET $column_array = ? WHERE product_name=?");
+    if(!$prepared_statement){
+        $_SESSION['error'] = $connection->error;
+        $connection->close();
+        header("location:stockroom.php");
     }
-    else{
-        echo "Cannot update record: " . $connection->error;
+    $prepared_statement->bind_param('ss', $new_value, $product_name);
+    if(!$prepared_statement){
+        $_SESSION['error'] = $connection->error;
+        $connection->close();
+        header("location:stockroom.php");
     }
-    header("location:stockroom.php");
+    $connection->query('LOCK TABLES product_table WRITE;');
+    if(!$prepared_statement->execute()){
+        //echo $connection->error;
+        //die();
+        $_SESSION['error']=$connection->error;
+    }
+    $connection->query('UNLOCK TABLES;');
+    if(!$prepared_statement){
+        $_SESSION['error'] = "$connection->error;";
+        $connection->close();
+        header("location:stockroom.php");
+    }
     $connection->close();
+    header("location:stockroom.php");
 }
 
 if (isset($_POST['add_product_submit'])) {
@@ -133,12 +148,13 @@ if (isset($_POST['stockroom_new_stock_submit'])) {
     $sale_price = $_POST['stockroom_new_sale_price'];
 
     $SQL = "INSERT INTO product_table (product_name, stock_purchase_price, stock_sale_price, remaining_stock, low_stock_alert) VALUES ('$product_name', '$purchase_price', '$sale_price', '$stock_level', '$stock_alert');";
-
+    $_SESSION['error']="No Error!";
     if ($connection->query($SQL) == TRUE){
 
     }
     else{
         echo "Cannot update record: " . $connection->error;
+
     }
     header("location:stockroom.php");
     $connection->close();
@@ -159,7 +175,6 @@ if (isset($_POST['vending_new_machine_submit'])) {
     }
     header("location:vending.php");
     $connection->close();
-
 }
 
 if (isset($_POST['vending_remove_machine_submit'])) {
@@ -181,14 +196,17 @@ if (isset($_POST['vending_alter_machine_submit'])) {
     $attribute_to_alter = $_POST['vending_alter_machine_attribute'];
     $new_value = $_POST['vending_alter_machine_value'];
 
+    $connection->query('LOCK TABLES machine_table WRITE;');
+
     $SQL = "UPDATE machine_table set $attribute_to_alter = '$new_value' where machine_id=$machine_id;";
 
     if ($connection->query($SQL) == TRUE){
-
+        //If everything went well, dp a bunch of html from flooding your sco nothing.
     }
     else{
         echo "Cannot update record: " . $connection->error;
     }
+    $connection->query('UNLOCK TABLES');
     header("location:vending.php");
     $connection->close();
 

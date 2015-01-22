@@ -1,5 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id();
 }
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");

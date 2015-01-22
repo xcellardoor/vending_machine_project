@@ -1,5 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id();
 }
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
@@ -44,7 +45,7 @@ if ($_SESSION['authenticated'] != "true") {
 
         });
 
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             if ($("#database_check:contains('failure')").length = -1) {
                 //document.getElementById("#database_check").setAttribute("id", "database_check_error");
                 $("#database_check").attr('id', "database_check_error");
@@ -52,7 +53,7 @@ if ($_SESSION['authenticated'] != "true") {
             else {
                 alert('test');
             }
-        });
+        });*/
 
         function filter_selections(argument) {
 
@@ -84,6 +85,25 @@ if ($_SESSION['authenticated'] != "true") {
             request.done(function (msg) {
                 $("#table_section").html(msg);
                 $("table").tablesorter();
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        }
+
+        function add_new_product() {
+            var request = $.ajax({
+                url: "post.php?addproduct=1" + 'test',
+                type: "GET",
+                dataType: "html"
+            });
+
+            request.done(function (msg) {
+                //$("#table_section").html(msg);
+                //$("table").tablesorter();
+                alert("test");
+                //filter_table();
             });
 
             request.fail(function (jqXHR, textStatus) {
@@ -134,7 +154,7 @@ include "./includes/shared_php_functions.php";
     </div>
     <div id="stockroom_amendments_section">
 
-        <form name='stock_update' method='post' action='post.php'>
+        <form name="stock_alter_product_form" method='post' action='post.php'>
 
             <?php
             $SQL = "SELECT * FROM product_table ORDER BY product_name ASC;";
@@ -148,7 +168,7 @@ include "./includes/shared_php_functions.php";
             }
 
             $selected = 0;
-
+            //Fetch available product attributes that we are able to change
             $SQL = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`="vending_database" AND `TABLE_NAME`="product_table";';
             $result = $connection->query($SQL);
             while ($row = $result->fetch_assoc()) {
@@ -179,7 +199,9 @@ include "./includes/shared_php_functions.php";
             </table>
             <!--ADDITION-->
             <hr class="adjustment_hr">
+            </form>
 
+        <form name="stock_add_new_product_form" method='post' action='post.php'>
             <h3>Add New Product to Stockroom</h3>
             <table class="adjustment_controls">
                 <tr>
@@ -206,6 +228,7 @@ include "./includes/shared_php_functions.php";
                     <td><input name='stockroom_new_sale_price' style='width:100%' placeholder="New Sale Price"
                                pattern="[0-9]{1,3}" title="Value from 0 to 999"></td>
                     <td><input name="stockroom_new_stock_submit" type="submit" value="Add Product"/></td>
+                    <!--<td><button type="button" onclick="add_new_product()">Add Product</button></td>-->
                 </tr>
             </table>
 
@@ -220,7 +243,8 @@ include "./includes/shared_php_functions.php";
             }
             ?>
             <hr class="adjustment_hr">
-
+            </form>
+        <form name="stock_remove_product_form" method='post' action='post.php'>
             <h3>Remove Product from Stockroom</h3>
             <table class="adjustment_controls">
                 <tr>
@@ -242,7 +266,13 @@ include "./includes/shared_php_functions.php";
 </div>
 <?php
 include('./includes/footer.php');
-$connection->close()
+$connection->close();
+
+if(isset($_SESSION['error'])) {
+    $error = json_encode($_SESSION['error']);
+    unset($_SESSION['error']);
+    echo '<script>alert('.$error.')</script>';
+}
 ?>
 
 </body>

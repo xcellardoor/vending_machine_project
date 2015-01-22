@@ -1,5 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id();
 }
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
@@ -15,6 +16,11 @@ if ($_SESSION['authenticated'] != "true") {
     <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
     <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
+
+
+    <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.17.0.css">
+    <script src="//code.jquery.com/qunit/qunit-1.17.0.js"></script>
+
     <script>
         $(document).ready(function () {
                 $("table").tablesorter();
@@ -121,6 +127,15 @@ if ($_SESSION['authenticated'] != "true") {
                 die("javascript");
             }
         }
+
+        /*QUnit.test("filter_selections", function( assert ){
+            filter_selections('machine_id');
+            assert.equal(document.getElementById('filter_options').innerHTML, "<input id='vending_filter_machine_id' placeholder='Machine ID?' pattern='[\d]{1,10}' title='Vending Machine ID Number (Max 10 numbers)'>");
+
+            filter_selections('quantity');
+            assert.equal(document.getElementById('filter_options').innerHTML, "<br><select id='vending_filter_quantity_direction'><option value='gt' selected>Greater than or equal to</option><option value='lt'>Less than or equal to</option></select><input id='vending_filter_quantity_value' placeholder='Quantity?' pattern='[\d]{1,5}' title='Number - 0 to 99,999'>");
+        });*/
+
     </script>
 </head>
 <title>Vending Machines</title>
@@ -141,6 +156,9 @@ date_default_timezone_set('Europe/London');
 
 ?>
 <div id="main-body">
+
+    <!--<div id="qunit"></div>
+    <div id="qunit-fixture">-->
 
     <div class='page_function_title'><h1>Vending Machine Management</h1></div>
 
@@ -171,7 +189,7 @@ date_default_timezone_set('Europe/London');
 
     <div id="vending_amendments_section">
 
-        <form class='form_alert' name='alter_vending_table' method='post' action='post.php'>
+        <form name="vending_add_product_form" method='post' action='post.php'>
             <?php
 
             if($connection->connect_error){
@@ -289,9 +307,10 @@ date_default_timezone_set('Europe/London');
                     </tr>
                     </tbody>
                 </table>*/?>
-
+                </form>
                 <hr class="adjustment_hr">
 
+                <form name="vending_remove_product_form" method='post' action='post.php'>
                 <h3>Remove Product from Machine</h3>
                 <table class="adjustment_controls">
                     <tr>
@@ -307,8 +326,12 @@ date_default_timezone_set('Europe/London');
                 </table>
 
                 <hr class="adjustment_hr">
+                    </form>
 
-                <h3>Add Machine to Database</h3>
+        <form name='vending_add_machine_form' method='post' action='post.php'>
+
+
+        <h3>Add Machine to Database</h3>
                 <table class="adjustment_controls">
                     <thead>
                     <tr>
@@ -348,10 +371,13 @@ date_default_timezone_set('Europe/London');
                     </tr>
                     </tbody>
                 </table>
+                </form>
 
                 <hr class="adjustment_hr">
+        <form name='vending_remove_machine_form' method='post' action='post.php'>
 
-                <h3>Remove Machine from Database</h3>
+
+        <h3>Remove Machine from Database</h3>
                 <table class="adjustment_controls">
                     <tr>
                         <th>Vending Machine</th>
