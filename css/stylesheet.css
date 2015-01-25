@@ -1,9 +1,6 @@
-body {
-    background: #e1e1e1;
-    margin: 0px;
-    padding: 20px 0px 0px;
-}
+/*CSS for Vending Machine Management System */
 
+/*This body shall be used as a backdrop to every page across the project - a simple grey color and basic padding are all that is required*/
 #main-body {
     background: #fff;
     margin-left: auto;
@@ -14,6 +11,14 @@ body {
     border: 1px solid #ccc;
 }
 
+/*This tag will be used for small pages which do not require the full CSS of 'main body', such as Order History popups.*/
+body {
+    background: #e1e1e1;
+    margin: 0px;
+    padding: 20px 0px 0px;
+}
+
+/*CSS for the login box, used to align the box in the centre of the screen and give color and slight attractiveness. To readjust the position of the box, change the margin directives.*/
 #login_box {
     clear: both;
     margin-left: auto;
@@ -26,30 +31,36 @@ body {
     text-align: center;
 }
 
-#order_creation_area{
+/*Provide a small border for the order creation area*/
+#order_creation_area {
     border: solid 1px black;
 }
 
-#vending_amendments_section{
+/*Used to control the flow of the database adjustment controls down the side of the vending.php page*/
+#vending_amendments_section {
     float: left;
     width: 33%;
-    margin:5px;
-    text-align:center;
+    margin: 5px;
+    text-align: center;
 }
 
-.page_function_title{
-    text-align:center;
+/*This CSS class is used for colouring and alignment of any of the titles across the top of pages (below the main navigation bar, of course) - e.g Stockroom Page.*/
+.page_function_title {
+    text-align: center;
     font-style: italic;
     color: #0075B2;
 }
 
-#stockroom_amendments_section{
-    float:left;
+/*Used to control the flow of the database adjustment controls down the side of the stockroom.php page*/
+
+#stockroom_amendments_section {
+    float: left;
     width: 33%;
-    margin:5px;
-    text-align:center;
+    margin: 5px;
+    text-align: center;
 }
 
+/*This CSS settings is used to manage the appearance of the database amendment controls themselves, they apply to both the Vending Page and the Stockroom Page.*/
 .adjustment_controls {
     border-bottom: 2px;
     border-left: none;
@@ -57,53 +68,63 @@ body {
     border-top: none;
     border-collapse: collapse;
     background: #E8E8EE;
-
 }
+
+/*Adjustment of the default horizontal row line, so it is possible to divide the database controls apart in a neat and appealing manner*/
 .adjustment_hr {
-    height:1px;
-    background:#000000;
+    height: 1px;
+    background: #000000;
     margin: 1em;
 }
 
-.adjustment_controls th, .adjustment_controls thead, .adjustment_controls td{
-    border:none;
-    outline:none;
+/*CSS adjustments which are specific to control the parent 'adjustment_controls' class. In this case, the table head and table body controls are being made invisible - dozens of cell borders are ugly.*/
+.adjustment_controls th, .adjustment_controls thead, .adjustment_controls td {
+    border: none;
+    outline: none;
 }
 
-#order_compose_section{
+/*Provide a margin and alignemtn for the order composition facility*/
+#order_compose_section {
     clear: both;
-    margin:5px;
-    text-align:center;
+    margin: 5px;
+    text-align: center;
 }
 
+/*A clear function used to allow DIV's and other elements to shake off the control of their parent divs.*/
 .clear {
     clear: both
 }
 
+/*This is used to apply alignment to any table which uses 'center'.*/
 table.center {
     margin-left: auto;
     margin-right: auto
 }
 
+/*Create a standard table style to be used everywhere unless explicitly overridden*/
 table, th, td {
     border: 1px solid #000;
     text-align: center
 }
 
+/*Assign the default font family of Trebuchet, with a fallback as Serif to p, h2, h3 and body*/
 p, h2, h3, body {
     font-family: Trebuchet MS, serif;
 }
 
+/*Assign default font of Lato to the heading tag family*/
 h1, h2, h3, h4, h5 {
     font-family: "Lato", sans-serif;
     margin: 0px;
     padding: 0px;
 }
 
+/*Apply a margin to h1 to space out any page titles etc from the other elements*/
 h1 {
     margin-bottom: 25px;
 }
 
+/*Add padding and font size styling to the paragraph tag*/
 p {
     font: 15px/1.7 Trebuchet MS;
     padding-top: 0;
@@ -111,6 +132,7 @@ p {
     margin: 0;
 }
 
+/*The header tag used for the menu needs it's styling so that the correct amount of the page is used, in this case a width of 1200px and a height of 70px. Background and positioning are also set here*/
 header {
     text-align: left;
     clear: both;
@@ -123,22 +145,26 @@ header {
     height: 70px;
 }
 
+/*Set the heading 1 tag used explicitly in the header to have the correct white color, font size, and distance from the top */
 header h1 {
     color: #fff;
     font-size: 25px;
     margin-top: 22px;
 }
 
+/*Set any links in the top to show no decoration as that would be ugly, and also to have the same white color as the other menu elements*/
 header h1 a {
     color: #fff;
     text-decoration: none;
 }
 
+/*Split the header into halves, one for the title and one for the shortcuts, using float to align them*/
 header .lefthalf, header .righthalf {
     width: 50%;
     float: left;
 }
 
+/*Footer styling, providing padding, appropriate margins, width and 'clears' from any other divs*/
 footer {
     text-align: left;
     clear: both;
@@ -150,12 +176,14 @@ footer {
     display: block
 }
 
+/*Provide coloring for the footer paragraph text*/
 footer p {
     font-size: 12px;
     color: #fff;
     padding-bottom: 0;
 }
 
+/*Provide the navigation controls the correct padding and float*/
 nav ul {
     margin: 0;
     padding: 0;
@@ -163,13 +191,14 @@ nav ul {
     float: right;
 }
 
+/*Provide the navigation controls links with the correct attributes such as their font size and margin. Be careful when adjusting! It took a long time to set these correctly so the navigation elements do not overflow their boundary*/
 nav ul li {
     font-size: 15px;
     list-style: none;
     float: left;
     margin: 10px 0 0 10px;
 }
-
+/*Specifically give the 'a' link attribute background colors, borders, curved edges and other decoration*/
 nav ul li a {
     color: #fff;
     text-decoration: none;
@@ -180,19 +209,23 @@ nav ul li a {
     border-radius: 25px;
 }
 
+/*Specify the 'hover' behaviour. In this case we need a background color changes to let the user know they are over the button*/
 nav ul li a:hover {
     background: #004B73;
     color: #fff;
 }
 
+/*When hovering over any link element in the document, ensure that the correct blue color is set*/
 a:hover {
     color: #004B73
 }
-.landing_page_buttons{
-    text-align:center;
+
+/*These last two classes control the text and buttons presented to the user - especially the size of the buttons and making them big for easy clicking*/
+.landing_page_buttons {
+    text-align: center;
 }
 
-.landing_page_buttons input{
+.landing_page_buttons input {
     width: 200px;
     height: 200px;
     font-size: 100%;

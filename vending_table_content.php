@@ -14,14 +14,10 @@ if (isset($_REQUEST['vending_filter_dropdown'])) {
 
 include('./includes/credentials.php');
 
-//$db_handle = mysql_connect($server, $user_name, $password);
-//$db_found = mysql_select_db($database, $db_handle);
-
 $connection = new mysqli($server, $user_name, $password, $database);
-if ($connection->connect_error){
+if ($connection->connect_error) {
     echo("Connection failed - Database Connectivity Error: " . $connection->connect_error);
-}
-else {
+} else {
     date_default_timezone_set('Europe/London');
 
     $SQL = "SELECT product_table.product_name, vending_table.machine_id, vending_table.quantity_in_machine, machine_table.building, machine_table.floor, vending_table.best_before from vending_table INNER JOIN product_table ON vending_table.product_id=product_table.product_id INNER JOIN machine_table ON vending_table.machine_id=machine_table.machine_id order by $order_instruction;";

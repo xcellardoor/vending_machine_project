@@ -1,4 +1,5 @@
 <?php
+//If there is no existing PHP session, start one.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     session_regenerate_id();
@@ -10,11 +11,12 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" type="text/css" href="../css/stylesheet.css">
 </head>
 <BODY>
+<!-- Create the login box for users to see - being central on the page shall be CSS controlled-->
 <div id="login_box">
     <h2>Vending Machine Management System</h2>
 
     <h3>Login</h3>
-
+    <!--Input form, values get passed to login_verification to be checked against the database-->
     <form name='login_form' method='post' action='login_verification.php'>
         Username:<input type="text" name="user_user_input" id="user_user_input" size="20"><br>
         Password:<input type="password" name="user_password_input" id="user_password_input" size="20"><br>

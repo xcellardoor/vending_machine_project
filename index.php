@@ -1,4 +1,5 @@
-<?php if (session_status() === PHP_SESSION_NONE) {
+<?php if (session_status() === PHP_SESSION_NONE){
+    //start session ID and regenerate
     session_start();
     session_regenerate_id();
 } ?>
@@ -13,6 +14,7 @@
 
 <?php
 include('./includes/menu.php');
+//Perform authentication check
 if ($_SESSION['authenticated'] != "true") {
     header("location:./authentication/login.php");
 } else {
@@ -24,11 +26,13 @@ if ($_SESSION['authenticated'] != "true") {
     <section id="home"><h1>Welcome to the Vending Machine Management System</h1>
 
         <p>Thank you for trialling the pre-release version of the Vending Management Solution from S162320 Management
-            Systems Ltd. We ask that you please report any anomalous or undesired behaviour to the testing representative
+            Systems Ltd. We ask that you please report any anomalous or undesired behaviour to the testing
+            representative
             who provided you with this pre-release copy of our software. To thank you for your participation, you will
             be given the opportunity to purchase the software for <b><em>half price</em></b> when the final version is
             released for sale.</p>
 
+        <!--Create the large buttons to be used on the home page for quick switching to the functionality the user wants. The CSS controls their size-->
         <div class="landing_page_buttons">
             <input TYPE="button" onClick="parent.location='./vending.php'" value="Vending"/>
             <input TYPE="button" onClick="parent.location='./stockroom.php'" value="Stockroom"/>

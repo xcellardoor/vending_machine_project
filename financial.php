@@ -15,33 +15,21 @@ if ($_SESSION['authenticated'] != "true") {
     <link rel="icon" type="image/png" href="./includes/icon.png">
     <script src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tablesorter/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="./includes/shared_javascript_functions.js"></script>
     <script type="text/javascript">
 
+        //Apply the tablesorter plugin to any table using the class, as soon as the page is finished loading.
         $(document).ready(function () {
                 $("table").tablesorter();
             }
         );
-        $(function () {
 
-            var $sidebar = $("#sorting_section"),
-                $window = $(window),
-                offset = $sidebar.offset(),
-                topPadding = 15;
+        //Constantly active function used for the dynamic scrolling of the database control elements, defined in shared_javascript_functions.js
+        $(function(){
+            sidebar_follow_user_script('#sorting_section');
+        })
 
-            $window.scroll(function () {
-                if ($window.scrollTop() > offset.top) {
-                    $sidebar.stop().animate({
-                        marginTop: $window.scrollTop() - offset.top + topPadding
-                    });
-                } else {
-                    $sidebar.stop().animate({
-                        marginTop: 0
-                    });
-                }
-            });
-
-        });
-
+        //Javascript SWITCH-CASE used to manipulate the DOM and provide extra filter controls and input boxes as and when they are needed, rather than cluttering up the page all the time.
         function filter_selections(argument) {
             switch (argument) {
                 case "between_dates":
@@ -65,6 +53,7 @@ if ($_SESSION['authenticated'] != "true") {
             }
         }
 
+        //Javascript function which calls to financial_table_content.php and passes arguments, and then takes any responses and repopulates the div that holds the table. Essentially the backbone of the searching functionality.
         function filter_table() {
             var request = $.ajax({
                 url: "financial_table_content.php?financial_sort_by_dropdown=" + $('#financial_sort_by_dropdown').val() + "&between_dates_older_date=" + $('#between_dates_older_date').val() + "&between_dates_newer_date=" + $('#between_dates_newer_date').val() + "&popularity_older_date=" + $('#popularity_older_date').val() + "&popularity_newer_date=" + $('#popularity_newer_date').val() + "&name_value=" + $('#name_value').val(),
@@ -83,7 +72,7 @@ if ($_SESSION['authenticated'] != "true") {
             });
         }
 
-        function alter_table(argument) {
+        /*function alter_table(argument) {
             switch (argument) {
 
                 case "date_of_sale":
@@ -94,22 +83,20 @@ if ($_SESSION['authenticated'] != "true") {
                 default:
                     document.getElementById('test_area').innerHTML = "";
             }
-        }
+        }*/
 
+        //Script used to provide the user with the ability to download the financial table currently on screen.
         function download_financial_table() {
-            /*var a = document.body.appendChild(
-             document.createElement("a")
-             );*/
-            var test = document.getElementById('download_area');
-            var new_button = document.createElement("a");
-            new_button.download = $('#download_filename').val() + ".html";
-            new_button.href = "data:text/html," + document.getElementById("report_section").innerHTML;
-            new_button.innerHTML = "Ready - Click Here to Download";
+            var position_in_document = document.getElementById('download_area'); //Get the download area element.
+            var new_button = document.createElement("a"); //Create a new hyperlink
+            new_button.download = $('#download_filename').val() + ".html"; //Create the download filename
+            new_button.href = "data:text/html," + document.getElementById("report_section").innerHTML; //Populate the link with the data.
+            new_button.innerHTML = "Ready - Click Here to Download"; //Apply a title to the link
 
-            test.appendChild(new_button);
+            position_in_document.appendChild(new_button);
+            $("#download_button").prop('disabled', true);
+
         }
-
-        //document.getElementById('financial_sort_by_dropdown').addEventListener('change',function(){alert('Hello');});
     </script>
     <title>Financial | Vending Machine Management System</title>
 </head>
@@ -117,7 +104,7 @@ if ($_SESSION['authenticated'] != "true") {
 <body>
 
 <?php
-include("./includes/menu.php");
+include("./includes/menu.php"); //Include the Menu as usual.
 ?>
 
 <div id="main-body">
@@ -126,6 +113,7 @@ include("./includes/menu.php");
     <div style="float: left; width: 66%">
         <div align="center" id="report_section">
 
+            <!--Javascript used to request the financial_table_content.php file and populate the table div automatically during page load.-->
             <script>
                 $("#report_section").load("financial_table_content.php");
             </script>
@@ -133,12 +121,14 @@ include("./includes/menu.php");
         <br>
     </div>
 
+    <!--Create the right-hand side sorting section controls-->
     <div style="float: left; width: 33%" id="sorting_section">
         <div align="center">
             <p>Filter Controls</p>
             <table cellspacing='0' cellpadding='0'>
                 <tr>
                     <td>
+                        <!--Dropdown box of sorting choices-->
                         <select id='financial_sort_by_dropdown' onchange="filter_selections(this.value)">
                             <option value="no_filter" selected>No Filter...</option>
                             <option value="name">Name</option>
@@ -146,7 +136,7 @@ include("./includes/menu.php");
                             <option value="popularity">Product Popularity</option>
                             <option value="machine_id">Machine ID (Coming soon in Software Assignment)</option>
                         </select>
-
+                        <!--Provide the button to trigger the sorts!-->
                         <button type='button' onclick='filter_table()'>Filter!</button>
                     </td>
                 </tr>
@@ -155,6 +145,7 @@ include("./includes/menu.php");
         <div id='filter_options' align="center"></div>
         <hr class="adjustment_hr">
 
+        <!--Create the download area and buttons-->
         <div id="download_area" align="center">
             <h4>Download Table Content</h4>
             <input type="text" id="download_filename" placeholder="Enter Filename...">
