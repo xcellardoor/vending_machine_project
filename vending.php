@@ -233,7 +233,7 @@ date_default_timezone_set('Europe/London');
                         <!--HTML5 date input for a product's best before-->
                         <td><input name="new_best_before" style="width:100%" placeholder='2015-01-01' type='date'
                                    value='2015-01-01'/></td>
-                        <td><input name="add_product_submit" type="submit" value="Add Product"/></td>
+                        <td><input name="vending_add_product_submit" type="submit" value="Add Product"/></td>
                     </tr>
                     </tbody>
                 </table>

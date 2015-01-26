@@ -72,19 +72,6 @@ if ($_SESSION['authenticated'] != "true") {
             });
         }
 
-        /*function alter_table(argument) {
-            switch (argument) {
-
-                case "date_of_sale":
-                    var result = "<input id='older_date' placeholder='2015-01-01' type='date' value='2015-01-01'/><input id='newer_date' placeholder='2015-01-01' type='date' value='2015-01-01'/>";
-                    document.getElementById('test_area').innerHTML = result;
-                    break;
-
-                default:
-                    document.getElementById('test_area').innerHTML = "";
-            }
-        }*/
-
         //Script used to provide the user with the ability to download the financial table currently on screen.
         function download_financial_table() {
             var position_in_document = document.getElementById('download_area'); //Get the download area element.

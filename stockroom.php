@@ -229,7 +229,7 @@ include "./includes/shared_php_functions.php";
                     <td>Confirm Delete?<input type="checkbox" id="remove_stockroom_checkbox"
                                               onclick="toggle_button('remove_stockroom_product_submit')"
                                               id="remove_stockroom_checkbox" value="true"></td>
-                    <td><input name="remove_stockroom_product_submit" id="remove_stockroom_product_submit" type="submit"
+                    <td><input name="stockroom_remove_product_submit" id="remove_stockroom_product_submit" type="submit"
                                value="Remove Product"/></td>
                 </tr>
             </table>

@@ -62,7 +62,7 @@ if (isset($_POST['stockroom_alter_product_submit'])) {
 }
 
 //The second possible flow of execution through this script
-if (isset($_POST['add_product_submit'])) {
+if (isset($_POST['vending_add_product_submit'])) {
     #Declaration and fetching of variables
     $new_product_id = $_POST['add_product_name'];
     $new_machine_id = $_POST['add_vending_machine'];
@@ -185,7 +185,7 @@ if (isset($_POST['vending_remove_product_submit'])) {
     header("location:vending.php");
 }
 
-if (isset($_POST['remove_stockroom_product_submit'])) {
+if (isset($_POST['stockroom_remove_product_submit'])) {
     //Fetch variable from post
     $remove_product_name = $_POST['remove_product_name'];
 
@@ -220,41 +220,6 @@ if (isset($_POST['remove_stockroom_product_submit'])) {
     $connection->close();
     header("location:stockroom.php");
 }
-
-/*if (isset($_POST['alter_product_submit'])) {
-    $alter_product_id = $_POST['alter_product_id'];
-    $alter_machine_id = $_POST['alter_machine_id'];
-    $alter_product_choice = $_POST['alter_product_choice'];
-    $alter_product_new_value = $_POST['alter_product_new_value'];
-
-    //Prepare statement, values in here are actually alter-product-choice, alter-product-new-value, alter-product-id and alter-machine-id.
-    $prepared_statement = $connection->prepare("UPDATE vending_table set ? = ? where product_id = ? and machine_id=?;");
-    if(!$prepared_statement){
-        $_SESSION['error'] = $connection->error;
-        $connection->close();
-        header("location:vending.php");
-    }
-    $prepared_statement->bind_param('ssss', $alter_product_choice, $alter_product_new_value, $alter_product_id, $alter_machine_id);
-    if(!$prepared_statement){
-        $_SESSION['error'] = $connection->error;
-        $connection->close();
-        header("location:stockroom.php");
-    }
-    $connection->query('LOCK TABLES product_table WRITE;');
-    if(!$prepared_statement->execute()){
-        //echo $connection->error;
-        //die();
-        $_SESSION['error']=$connection->error;
-    }
-    $connection->query('UNLOCK TABLES;');
-    if(!$prepared_statement){
-        $_SESSION['error'] = "$connection->error;";
-        $connection->close();
-        header("location:stockroom.php");
-    }
-    header("location:stockroom.php");
-    $connection->close();;
-}*/
 
 if (isset($_POST['stockroom_new_stock_submit'])) {
     //Grab several variables that should be set by the user.
